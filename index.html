@@ -178,6 +178,7 @@
   font-size: 12px;
   color: var(--muted);
   margin-top: 6px;
+}
 
   /* Footer / sticky controls */
   footer.sticky{position:fixed; left:0; right:0; bottom:0; background:rgba(17,17,17,.85);
@@ -1044,6 +1045,7 @@ function updateMBUI(){
     $mbOut.textContent = 'Tap a word to move it into “Matters” and try a tiny action.';
   } else {
     $mbOut.textContent = 'Arrange by feel. Let what matters lead the next tiny act.';
+    }
 }
 // 7) Breathing 4-6
 let breathTimer=null, breathPhase='exhale';
@@ -1075,9 +1077,19 @@ function resetAll(){
   [...document.getElementById('valChips').children].forEach(x=>x.classList.remove('active')); document.getElementById('valSuggest').textContent='';
   document.getElementById('elPred').value=''; document.getElementById('elOut').value=''; document.getElementById('elList').textContent='';
   document.getElementById('ddA').value=''; document.getElementById('ddB').value=''; document.getElementById('ddResult').textContent='';
-  const $chips=document.getElementById('mbChips'), $yes=document.getElementById('mbYes'), $no=document.getElementById('mbNo'); document.getElementById('mbOut').textContent='';
-  [...$yes.querySelectorAll('.draggable')].forEach(el=>$chips.appendChild(el)); [...$no.querySelectorAll('.draggable')].forEach(el=>$chips.appendChild(el));
-  clearInterval(breathTimer); document.getElementById('breathStatus').textContent=''; const $c=document.getElementById('breathCircle'); $c.style.transition='transform .25s ease-out'; $c.style.transform='scale(1)';
+
+  const $pool=document.getElementById('mbPoolWrap');
+  const $yes=document.getElementById('mbYes');
+  const $no=document.getElementById('mbNo');
+  document.getElementById('mbOut').textContent='';
+  [...$yes.querySelectorAll('.draggable')].forEach(el => $pool.appendChild(el));
+  [...$no.querySelectorAll('.draggable')].forEach(el => $pool.appendChild(el));
+  if (typeof updateMBUI === 'function') updateMBUI();
+
+  clearInterval(breathTimer); document.getElementById('breathStatus').textContent='';
+  const $c=document.getElementById('breathCircle');
+  $c.style.transition='transform .25s ease-out'; $c.style.transform='scale(1)';
+}
 }
 document.getElementById('clear').onclick=resetAll;
 document.getElementById('homeClear').onclick=resetAll;
