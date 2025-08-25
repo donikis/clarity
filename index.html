@@ -47,36 +47,55 @@
   .draggable:active{cursor:grabbing}
   @media (prefers-reduced-motion:reduce){*{transition:none !important;animation:none !important}}
   @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
-.appHeader {
-  position: sticky;
-  top: 0;
-  left: 0;
-  right: 0;
-  background: var(--card);
-  border-bottom: 1px solid var(--line);
-  padding: 14px 20px;
-  text-align: center;
-  z-index: 1000;
-}
 
-.appTitle {
-  font-size: 22px;
-  font-weight: 700;
-  margin: 0;
-  color: var(--text);
-  letter-spacing: .5px;
-}
+  /* Sticky app header */
+  .appHeader{position:sticky;top:0;left:0;right:0;background:var(--card);border-bottom:1px solid var(--line);padding:14px 20px 18px;text-align:center;z-index:1000}
+  .appTitle{font-size:22px;font-weight:700;margin:0;color:var(--text);letter-spacing:.5px}
+  .appTagline{font-size:13px;color:var(--muted);margin-top:4px}
 
-.appTagline {
-  font-size: 13px;
-  color: var(--muted);
-  margin-top: 4px;
-}
+  /* FAQ modal */
+  .faqBtn{position:absolute;top:8px;right:8px;border-radius:999px;padding:8px 12px;font-size:14px}
+  .faqBtn:focus{outline:2px solid var(--accent-2);outline-offset:2px}
+  .modalOverlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:saturate(120%) blur(6px);display:none;align-items:center;justify-content:center;z-index:2000;padding:16px}
+  .modal{width:min(720px,92vw);max-height:80vh;overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,.4)}
+  .modalHeader{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--line)}
+  .modalTitle{margin:0;font-size:18px;font-weight:700}
+  .modalClose{appearance:none;border:1px solid var(--line);background:#0f1114;color:var(--text);border-radius:10px;padding:8px 10px;font-size:14px;cursor:pointer}
+  .modalBody{padding:10px 16px 16px}
+  .faqList details{border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:8px 0;background:#0f1114}
+  .faqList summary{cursor:pointer;font-weight:600;outline:none}
+  .faqList p{margin:8px 0 0;color:var(--muted);font-size:14px}
 </style>
 
 <div class="appHeader">
+  <button id="faqBtn" class="btn ghost faqBtn" type="button" aria-haspopup="dialog" aria-controls="faqModal">FAQ</button>
   <h1 class="appTitle">Clarity Now</h1>
-  <div class="appTagline">Philosophy-powered calm guidance app< /div>
+  <div class="appTagline">Timeless wisdom for uncertain times</div>
+</div>
+
+<!-- FAQ Modal -->
+<div id="faqModal" class="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="faqTitle" style="display:none">
+  <div class="modal" role="document">
+    <div class="modalHeader">
+      <h2 id="faqTitle" class="modalTitle">How to use Clarity Now</h2>
+      <button id="faqClose" class="modalClose" type="button" aria-label="Close FAQ">Close</button>
+    </div>
+    <div class="modalBody">
+      <div class="helper" style="margin-bottom:8px">Quick answers to get the most out of the app.</div>
+      <div class="faqList">
+        <details><summary>1) What is this app?</summary><p>A calm tool to name what you feel (what-ifs & dread) and get 5 tailored perspectives plus simple exercises.</p></details>
+        <details><summary>2) How do I start?</summary><p>Tap 2–4 symptoms that match your state, then press <b>See top 5</b>. Read one perspective and try the <i>Do now</i> action.</p></details>
+        <details><summary>3) What if the suggestions don’t fit?</summary><p>Add or remove a symptom to re-rank results. Or hit <b>Reset</b> and try again with different picks.</p></details>
+        <details><summary>4) What does the confidence bar mean?</summary><p>It reflects how strongly your chosen symptoms map to the perspective categories. Higher = better match.</p></details>
+        <details><summary>5) Which exercise should I try first?</summary><p><b>5-4-3-2-1</b> for panicky moments, <b>Worry Postponement</b> for loops, <b>Values → micro-act</b> if stuck, <b>Breathing 4-6</b> to downshift.</p></details>
+        <details><summary>6) Can I use this offline?</summary><p>Most features work after the page loads. External “Learn more” links need internet.</p></details>
+        <details><summary>7) Can I save favorite insights?</summary><p>Use your device’s Share or screenshot. A built-in save option may come later.</p></details>
+        <details><summary>8) Is this medical advice?</summary><p>No. It’s general educational support. If you’re in crisis, contact local emergency services.</p></details>
+        <details><summary>9) Will it keep my data?</summary><p>No accounts, no servers—everything runs in your browser. Your inputs stay on your device.</p></details>
+        <details><summary>10) How do I add more perspectives?</summary><p>If you host this yourself, open <code>index.html</code>, find <code>const LIB = [ ]</code>, and paste new items above the closing <code>];</code>.</p></details>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="container" id="root">
@@ -129,7 +148,7 @@
     </div>
   </div>
 
-  <!-- Interactive exercises (non-breathing + breathing added) -->
+  <!-- Interactive exercises -->
   <div class="card" id="exercises">
     <div class="title">Quick settle (interactive)</div>
 
@@ -202,7 +221,7 @@
       <div id="mbOut" class="quote" style="margin-top:8px"></div>
     </div>
 
-    <!-- NEW: Guided Breathing -->
+    <!-- 7) Guided Breathing -->
     <div class="item">
       <div class="meta">7) Breathing • Calm cycle</div>
       <div class="title" style="margin:0">Guided Breathing (4 in → 6 out)</div>
@@ -216,7 +235,6 @@
       </div>
       <div class="small" style="margin-top:8px">Tip: follow the circle — expand while you inhale, soften while you exhale.</div>
     </div>
-
   </div>
 
   <div class="card helper">Not medical advice. If you’re in crisis, contact local emergency services.</div>
@@ -231,7 +249,6 @@
   /* ========= DATA ========= */
   const CATS={WORRY:{name:"Uncertain future / what-ifs"},EXIST:{name:"Dread / meaning / mortality"}};
 
-  /* Symptoms (10 + 10) */
   const SYM_W=[
     {id:"w1",label:"Catastrophic ‘what if’ loops",map:{WORRY:3}},
     {id:"w2",label:"Over-planning / repeated checking",map:{WORRY:3}},
@@ -257,7 +274,7 @@
     {id:"e10",label:"Fear choices are irreversible",map:{EXIST:2,WORRY:1}}
   ];
 
-  /* 50 perspectives (titles kept; summaries/actions rewritten in casual, reassuring English) */
+  /* Library (first 50 casual tone) */
   const LIB=[
     /* WHAT-IFS (25) */
     {cat:"WORRY",school:"Stoicism",w:1.0,t:"Dichotomy of Control (Epictetus)",b:"Put your energy where it actually helps. If it’s not yours to control, you can stop carrying it.",a:"Write 3 things you can control today. Do one tiny step now.",u:"https://plato.stanford.edu/entries/epictetus/"},
@@ -285,7 +302,6 @@
     {cat:"WORRY",school:"Stoicism",w:0.7,t:"Check Impressions (Epictetus)",b:"Pause before you believe a first reaction.",a:"Ask: “Is this a fact, or my story about it?”",u:"https://plato.stanford.edu/entries/epictetus/"},
     {cat:"WORRY",school:"Positive Psych",w:0.7,t:"Tiny Wins → Momentum",b:"Small wins beat overthinking. Momentum changes mood.",a:"Finish a 2-minute task right now.",u:"https://tinyhabits.com/"},
     {cat:"WORRY",school:"Sleep Science",w:0.7,t:"Stimulus Control (Sleep)",b:"Protect your bed for sleep so it’s not a worry zone.",a:"If awake > 20 minutes, get up for a short break.",u:"https://www.sleepfoundation.org/insomnia/treatment/stimulus-control-therapy"},
-    
 
     /* DREAD / MEANING (25) */
     {cat:"EXIST",school:"Existentialism",w:1.0,t:"Dread as Freedom’s Shadow (Kierkegaard)",b:"Feeling dread can mean you’re facing real choice. That’s courage territory.",a:"Pick one value and take one small loyal act.",u:"https://plato.stanford.edu/entries/kierkegaard/"},
@@ -312,190 +328,7 @@
     {cat:"EXIST",school:"Stoicism",w:0.72,t:"Internal Scoreboard (Virtue)",b:"Score your day by character, not applause.",a:"Pick a virtue (e.g., honesty) to practice today.",u:"https://plato.stanford.edu/entries/stoicism/"},
     {cat:"EXIST",school:"Self-Compassion",w:0.72,t:"Treat Yourself as a Friend",b:"Warmth reduces shame and stuckness.",a:"Say one genuinely kind sentence to yourself out loud.",u:"https://self-compassion.org/"},
     {cat:"EXIST",school:"Prosocial",w:0.7,t:"Contribution Scan",b:"Small helping acts boost meaning fast.",a:"Do one tiny helpful thing for someone nearby.",u:"https://greatergood.berkeley.edu/topic/altruism"},
-    {cat:"EXIST",school:"CBT",w:0.7,t:"Interrupt Rumination",b:"Change your context to change the loop.",a:"Stand up, look out a window, take three slow breaths.",u:"https://www.apa.org/monitor/2013/07-08/rumination"},
-      // --- New WORRY items ---
-  {
-    cat: "WORRY",
-    school: "Stoicism",
-    w: 0.82,
-    t: "Control Your Response, Not the World",
-    b: "Life will throw surprises. Peace comes from steering your own reaction.",
-    a: "Pause, take one breath, then choose your next word or action calmly.",
-    u: "https://modernstoicism.com/"
-  },
-  {
-    cat: "WORRY",
-    school: "CBT",
-    w: 0.8,
-    t: "Label the Worry",
-    b: "Simply naming a worry reduces its power—it stops being the whole story.",
-    a: "Say out loud: 'This is just a worry, not a fact.'",
-    u: "https://www.psychologytools.com/self-help/anxiety/"
-  },
-  {
-    cat: "WORRY",
-    school: "ACT",
-    w: 0.78,
-    t: "Make Room for Discomfort",
-    b: "Avoiding feelings often makes them stronger. Allow them, then act on your values.",
-    a: "Notice the feeling, whisper 'I can carry this,' then take one valued step.",
-    u: "https://contextualscience.org/act"
-  },
-  {
-    cat: "WORRY",
-    school: "Positive Psych",
-    w: 0.8,
-    t: "Shift to Gratitude",
-    b: "Threat focus narrows your view; gratitude widens it.",
-    a: "Write down one thing that went right today.",
-    u: "https://greatergood.berkeley.edu/topic/gratitude"
-  },
-  {
-    cat: "WORRY",
-    school: "Mindfulness",
-    w: 0.82,
-    t: "Anchor in the Body",
-    b: "Your body lives in the present; anxiety lives in the future.",
-    a: "Feel your feet on the ground for 30 seconds.",
-    u: "https://www.mindful.org/"
-  },
-  {
-    cat: "WORRY",
-    school: "CBT",
-    w: 0.79,
-    t: "Shrink the What-If",
-    b: "Often the scary outcome is less likely than you think.",
-    a: "Rate the chance 0–100%. Adjust your focus accordingly.",
-    u: "https://www.psychologytools.com/self-help/cognitive-restructuring/"
-  },
-  {
-    cat: "WORRY",
-    school: "Zen",
-    w: 0.77,
-    t: "Chop Wood, Carry Water",
-    b: "Simple actions ground you when thoughts spiral.",
-    a: "Do one ordinary task slowly and fully.",
-    u: "https://plato.stanford.edu/entries/japanese-zen/"
-  },
-  {
-    cat: "WORRY",
-    school: "Stoicism",
-    w: 0.8,
-    t: "Borrowed Trouble",
-    b: "Most fears never arrive; they only cost today’s peace.",
-    a: "List 3 past worries that never happened.",
-    u: "https://modernstoicism.com/"
-  },
-  {
-    cat: "WORRY",
-    school: "CBT",
-    w: 0.76,
-    t: "Park It on Paper",
-    b: "Writing a worry down tells your mind it’s stored and safe.",
-    a: "Write one looping thought, fold it, set it aside.",
-    u: "https://www.anxietycanada.com/articles/anxiety-journaling/"
-  },
-  {
-    cat: "WORRY",
-    school: "ACT",
-    w: 0.78,
-    t: "Tiny Value-Driven Step",
-    b: "Even with fear, moving toward what matters shrinks worry’s control.",
-    a: "Pick one thing that matters—do a 2-minute version now.",
-    u: "https://contextualscience.org/act_values"
-  },
-
-  // --- New EXIST items ---
-  {
-    cat: "EXIST",
-    school: "Existentialism",
-    w: 0.82,
-    t: "Freedom Includes Anxiety",
-    b: "Feeling dread often means you’re free to choose—anxiety is the price of freedom.",
-    a: "Decide one small thing today, just because you can.",
-    u: "https://plato.stanford.edu/entries/kierkegaard/"
-  },
-  {
-    cat: "EXIST",
-    school: "Buddhism",
-    w: 0.8,
-    t: "Everything Passes",
-    b: "Sadness, dread, even meaninglessness—all feelings are temporary weather.",
-    a: "Whisper: 'This too will change.'",
-    u: "https://plato.stanford.edu/entries/early-buddhism/"
-  },
-  {
-    cat: "EXIST",
-    school: "Stoicism",
-    w: 0.8,
-    t: "Mortality as Motivation",
-    b: "Remembering death isn’t grim—it’s a reminder to live now.",
-    a: "Ask: If this were my last day, what would matter most?",
-    u: "https://modernstoicism.com/"
-  },
-  {
-    cat: "EXIST",
-    school: "Positive Psych",
-    w: 0.78,
-    t: "Savor a Small Joy",
-    b: "Meaning grows in noticing the small good, not waiting for big answers.",
-    a: "Notice one detail you enjoy right now.",
-    u: "https://positivepsychology.com/savoring/"
-  },
-  {
-    cat: "EXIST",
-    school: "Logotherapy",
-    w: 0.8,
-    t: "Choose Your Attitude",
-    b: "Even in suffering, your stance is yours to shape.",
-    a: "Write one line: 'Today I will face this with ___.'",
-    u: "https://www.viktorfrankl.org/what-is-logotherapy/"
-  },
-  {
-    cat: "EXIST",
-    school: "Mindfulness",
-    w: 0.78,
-    t: "Notice the Gap",
-    b: "There’s a pause between thoughts—you are not the dread itself.",
-    a: "Rest in one breath of silence.",
-    u: "https://www.mindful.org/"
-  },
-  {
-    cat: "EXIST",
-    school: "Existentialism",
-    w: 0.79,
-    t: "Make Meaning, Don’t Wait for It",
-    b: "Life doesn’t hand you meaning—you create it through action.",
-    a: "Do one act today that feels meaningful to you.",
-    u: "https://plato.stanford.edu/entries/existentialism/"
-  },
-  {
-    cat: "EXIST",
-    school: "Taoism",
-    w: 0.77,
-    t: "Flow With Change",
-    b: "Resisting change fuels dread; flowing with it softens it.",
-    a: "Say yes to one small change today.",
-    u: "https://plato.stanford.edu/entries/daoism/"
-  },
-  {
-    cat: "EXIST",
-    school: "Self-Compassion",
-    w: 0.78,
-    t: "Be Gentle With Yourself",
-    b: "You don’t need all the answers. Kindness makes the weight lighter.",
-    a: "Speak to yourself as you would to a close friend.",
-    u: "https://self-compassion.org/"
-  },
-  {
-    cat: "EXIST",
-    school: "Prosocial",
-    w: 0.78,
-    t: "Meaning Through Service",
-    b: "Helping others often dissolves the fog of dread.",
-    a: "Do one tiny helpful thing for someone else today.",
-    u: "https://greatergood.berkeley.edu/topic/altruism"
-  }
+    {cat:"EXIST",school:"CBT",w:0.7,t:"Interrupt Rumination",b:"Change your context to change the loop.",a:"Stand up, look out a window, take three slow breaths.",u:"https://www.apa.org/monitor/2013/07-08/rumination"}
   ];
 
   /* ========= BUILD UI ========= */
@@ -504,7 +337,6 @@
   SYM_W.forEach(s=>{$w.appendChild(makeChip(s))}); SYM_E.forEach(s=>{$e.appendChild(makeChip(s))});
   function updateCount(){const n=document.querySelectorAll('.chip.active').length; $count.textContent=n+" selected";}
 
-  /* ========= ENGINE ========= */
   function compute(){
     const active=[...document.querySelectorAll('.chip.active')].map(el=>el.dataset.id);
     if(active.length===0){alert('Pick at least one.'); return;}
@@ -522,10 +354,8 @@
     const $res=document.getElementById('results'), $tags=document.getElementById('tags'), $feed=document.getElementById('feed');
     $res.style.display='block'; $tags.innerHTML=''; $feed.innerHTML='';
     Object.entries(scores).sort((a,b)=>b[1]-a[1]).forEach(([k,v])=>{ if(v>0){const p=document.createElement('span'); p.className='pill'; p.textContent=CATS[k].name+' • '+v; $tags.appendChild(p);} });
-    // confidence
     document.getElementById('confText').textContent=Math.round(conf*100)+'%';
     document.getElementById('confBar').style.width=(Math.round(conf*100))+'%';
-    // top 5
     const items=LIB.map((it,ix)=>({ix,score:(scores[it.cat]||0)*(it.w||1),...it}))
                    .filter(x=>x.score>0).sort((a,b)=>b.score-a.score).slice(0,5);
     if(items.length===0){$feed.innerHTML='<div class="helper">No matches yet. Try one more symptom.</div>'; return;}
@@ -539,13 +369,12 @@
         <div style="margin-top:10px"><a href="${it.u}" target="_blank" rel="noopener">Learn more ↗</a></div>`;
       $feed.appendChild(d);
     });
-    // seed philosopher coach with dominant category
     const dom = scores.WORRY >= scores.EXIST ? 'WORRY' : 'EXIST';
     currentPhiloCategory = dom;
     document.getElementById('philoOut').textContent = 'Pick a philosopher to hear their take for your current state.';
   }
 
-  /* ========= “What would they say?” ========= */
+  /* “What would they say?” */
   const PHILOS=['Marcus Aurelius','Epictetus','Buddha','Camus','Viktor Frankl'];
   const PHILO_QUOTES={
     WORRY:{
@@ -572,7 +401,7 @@
     $pWrap.appendChild(b);
   });
 
-  /* ========= Interactive Exercises ========= */
+  /* Interactive Exercises */
   // 1) 5-4-3-2-1
   const gSets=[{n:5,label:'See'},{n:4,label:'Touch'},{n:3,label:'Hear'},{n:2,label:'Smell'},{n:1,label:'Taste'}];
   document.getElementById('gStart').onclick=()=>{
@@ -643,14 +472,13 @@
   document.getElementById('breathStart').onclick=()=>{ clearInterval(breathTimer); breathPhase='exhale'; runBreath(); breathTimer=setInterval(runBreath,10000); };
   document.getElementById('breathStop').onclick=()=>{ clearInterval(breathTimer); $bStatus.textContent='Paused'; $circle.style.transition='transform .25s ease-out'; $circle.style.transform='scale(1)'; };
   function runBreath(){
-    // inhale 4s (expand), exhale 6s (shrink)
-    if(breathPhase==='exhale'){ // switch to inhale
+    if(breathPhase==='exhale'){
       $bStatus.textContent='Breathe in… 4s';
       $circle.style.transition='transform 4s ease-in-out';
       $circle.style.transform='scale(1.45)';
       breathPhase='inhale';
       setTimeout(()=>{ $bStatus.textContent='Hold… 0–1s'; },4000);
-    }else{ // switch to exhale
+    }else{
       $bStatus.textContent='Breathe out… 6s';
       $circle.style.transition='transform 6s ease-in-out';
       $circle.style.transform='scale(1)';
@@ -658,7 +486,20 @@
     }
   }
 
-  /* ========= BUTTONS ========= */
+  /* FAQ modal wiring */
+  (function faq(){
+    const overlay=document.getElementById('faqModal');
+    const openBtn=document.getElementById('faqBtn');
+    const closeBtn=document.getElementById('faqClose');
+    function open(){ overlay.style.display='flex'; document.body.style.overflow='hidden'; closeBtn.focus(); }
+    function close(){ overlay.style.display='none'; document.body.style.overflow=''; openBtn.focus(); }
+    openBtn.addEventListener('click',open);
+    closeBtn.addEventListener('click',close);
+    overlay.addEventListener('click',e=>{ if(e.target===overlay) close(); });
+    document.addEventListener('keydown',e=>{ if(e.key==='Escape' && overlay.style.display==='flex') close(); });
+  })();
+
+  /* Buttons */
   document.getElementById('go').onclick=compute;
   document.getElementById('homeGo').onclick=compute;
   document.getElementById('jumpExercises').onclick=()=>{ document.getElementById('exercises').scrollIntoView({behavior:'smooth'}); };
@@ -667,24 +508,17 @@
     document.querySelectorAll('.chip.active').forEach(el=>el.classList.remove('active'));
     document.getElementById('results').style.display='none';
     updateCount();
-    // reset exercises
     document.getElementById('gList').innerHTML=''; document.getElementById('gStatus').textContent='Tap items as you notice them.';
     clearInterval(wpTimer); document.getElementById('wpCountdown').textContent='';
     [...document.getElementById('valChips').children].forEach(x=>x.classList.remove('active')); document.getElementById('valSuggest').textContent='';
     document.getElementById('elPred').value=''; document.getElementById('elOut').value=''; document.getElementById('elList').textContent='';
     document.getElementById('ddA').value=''; document.getElementById('ddB').value=''; document.getElementById('ddResult').textContent='';
-    // meaning builder
-    const $mbChips=document.getElementById('mbChips'), $mbYes=document.getElementById('mbYes'), $mbNo=document.getElementById('mbNo'); document.getElementById('mbOut').textContent='';
-    [...$mbYes.querySelectorAll('.draggable')].forEach(el=>$mbChips.appendChild(el)); [...$mbNo.querySelectorAll('.draggable')].forEach(el=>$mbChips.appendChild(el));
-    // breathing
-    clearInterval(breathTimer); document.getElementById('breathStatus').textContent=''; const $circle=document.getElementById('breathCircle'); $circle.style.transition='transform .25s ease-out'; $circle.style.transform='scale(1)';
+    const $chips=document.getElementById('mbChips'), $yes=document.getElementById('mbYes'), $no=document.getElementById('mbNo'); document.getElementById('mbOut').textContent='';
+    [...$yes.querySelectorAll('.draggable')].forEach(el=>$chips.appendChild(el)); [...$no.querySelectorAll('.draggable')].forEach(el=>$chips.appendChild(el));
+    clearInterval(breathTimer); document.getElementById('breathStatus').textContent=''; const $c=document.getElementById('breathCircle'); $c.style.transition='transform .25s ease-out'; $c.style.transform='scale(1)';
   }
   document.getElementById('clear').onclick=resetAll;
   document.getElementById('homeClear').onclick=resetAll;
 
-  /* ========= INIT ========= */
   (function init(){ /* no async */ })();
-
-  /* ========= Philosopher chips build ========= */
-  // (already built in earlier block)
 </script>
