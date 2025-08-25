@@ -14,6 +14,30 @@
   --tap: rgba(255, 255, 255, .1);
   --safe-b: env(safe-area-inset-bottom, 0px);
 }
+
+body {
+  font-family: 'Helvetica Neue', Arial, sans-serif; /* adidas uses sharp sans-serif */
+  letter-spacing: 0.2px;
+}
+
+h1, .title {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+}
+
+.btn.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn.primary:active {
+  background: var(--accent-2);
+
   *{box-sizing:border-box}
   html,body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 -apple-system,system-ui,Inter,Segoe UI,Roboto,Helvetica,Arial;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;-webkit-text-size-adjust:100%}
   body{-webkit-overflow-scrolling:touch}
