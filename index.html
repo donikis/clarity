@@ -1,79 +1,148 @@
 <!DOCTYPE html>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
 <title>Clarity Now — What-ifs & Dread</title>
+
 <style>
-  :root { --bg:#0b0b0c; --card:#111214; --text:#eef2f6; --muted:#96a0aa; --line:#1f2328; --accent:#10b981; --accent-2:#3b82f6; --tap:rgba(255,255,255,.08); --safe-b: env(safe-area-inset-bottom,0px); }
+  /* ========================
+     THEME — Adidas-inspired, 2025 polish
+     ======================== */
+  :root{
+    --bg:#000;                 /* black background */
+    --card:#111;               /* dark surface */
+    --text:#fff;               /* main text */
+    --muted:#aaa;              /* secondary text */
+    --line:#2A2A2A;            /* borders */
+    --accent:#0085CA;          /* primary blue */
+    --accent-2:#00B0FF;        /* gradient mate */
+    --tap:rgba(255,255,255,.10);
+    --safe-b: env(safe-area-inset-bottom,0px);
+  }
+
   *{box-sizing:border-box}
-  html,body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 -apple-system,system-ui,Inter,Segoe UI,Roboto,Helvetica,Arial;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;-webkit-text-size-adjust:100%}
-  body{-webkit-overflow-scrolling:touch}
-  a{color:#9bd6c3;text-decoration:none;border-bottom:1px dotted #3b8f79}
-  a:active{opacity:.85}
-  .container{max-width:920px;margin:0 auto;padding:max(16px,env(safe-area-inset-top)) 16px calc(120px + var(--safe-b))}
-  header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
-  h1{margin:0;font-size:21px;font-weight:700;letter-spacing:.2px}
-  .badge{font-size:12px;padding:6px 10px;border:1px solid var(--line);border-radius:999px;color:var(--muted)}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin:12px 0;box-shadow:0 1px 0 rgba(0,0,0,.06)}
-  .sectionTitle{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-  @media(min-width:720px){.grid{grid-template-columns:repeat(3,1fr)}}
-  .btn,.chip{appearance:none;border:1px solid var(--line);background:#0f1114;color:inherit;border-radius:14px;padding:12px 14px;font-size:16px;transition:transform .06s ease,background .12s ease;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
-  .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
-  .btn.ghost{background:transparent}
-  .btn:active,.chip:active{background:var(--tap);transform:scale(.98)}
-  .chip{text-align:left;white-space:normal;line-height:1.3}
-  .chip.active{background:var(--accent);border-color:var(--accent);color:#fff}
-  .groupLabel{font-size:12px;color:var(--muted);margin:8px 0 4px}
-  .pill{display:inline-block;margin:0 6px 6px 0;font-size:12px;padding:4px 8px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.04)}
-  .title{font-weight:700;margin-bottom:8px}
-  .sep{height:1px;background:var(--line);margin:12px 0;opacity:.9}
-  .item{border:1px solid var(--line);border-radius:14px;padding:12px;margin:10px 0;animation:fade .18s ease}
-  .item .meta{font-size:12px;color:var(--muted);margin-bottom:6px}
-  .meta .tag{margin-left:8px;opacity:.9}
-  .helper{font-size:13px;color:var(--muted)}
-  .counter{font-size:13px;color:var(--muted)}
-  footer.sticky{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);padding:10px 16px calc(10px + var(--safe-b));display:flex;gap:8px;justify-content:center;z-index:999}
-  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-  .input,input[type="text"],textarea,select{background:#0f1114;color:inherit;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:15px;width:100%}
-  textarea{min-height:80px;resize:vertical}
-  .small{font-size:12px;color:var(--muted)}
-  .kicker{font-size:12px;color:var(--muted)}
-  .progress{height:10px;border-radius:999px;background:#0e1113;border:1px solid var(--line);overflow:hidden}
-  .progress>i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));width:0%;transition:width .3s ease}
-  .quote{font-size:14px;opacity:.95}
-  .dragZone{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .dropCol{border:1px dashed var(--line);border-radius:12px;min-height:120px;padding:10px}
-  .draggable{display:inline-block;margin:6px 6px 0 0;padding:8px 10px;border:1px solid var(--line);border-radius:999px;background:#0f1114;cursor:grab}
-  .draggable:active{cursor:grabbing}
-  @media (prefers-reduced-motion:reduce){*{transition:none !important;animation:none !important}}
-  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+  html,body{margin:0;background:var(--bg);color:var(--text);
+    font:16px/1.55 "Helvetica Neue", -apple-system, system-ui, Inter, Segoe UI, Roboto, Arial;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;-webkit-text-size-adjust:100%}
 
-  /* Sticky app header */
-  .appHeader{position:sticky;top:0;left:0;right:0;background:var(--card);border-bottom:1px solid var(--line);padding:14px 20px 18px;text-align:center;z-index:1000}
-  .appTitle{font-size:22px;font-weight:700;margin:0;color:var(--text);letter-spacing:.5px}
-  .appTagline{font-size:13px;color:var(--muted);margin-top:4px}
+  a{color:var(--accent-2);text-decoration:none;border-bottom:1px dotted rgba(0,176,255,.35)}
+  a:active{opacity:.9}
 
-  /* FAQ modal */
-  .faqBtn{position:absolute;top:8px;right:8px;border-radius:999px;padding:8px 12px;font-size:14px}
-  .faqBtn:focus{outline:2px solid var(--accent-2);outline-offset:2px}
-  .modalOverlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:saturate(120%) blur(6px);display:none;align-items:center;justify-content:center;z-index:2000;padding:16px}
-  .modal{width:min(720px,92vw);max-height:80vh;overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,.4)}
-  .modalHeader{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--line)}
-  .modalTitle{margin:0;font-size:18px;font-weight:700}
-  .modalClose{appearance:none;border:1px solid var(--line);background:#0f1114;color:var(--text);border-radius:10px;padding:8px 10px;font-size:14px;cursor:pointer}
-  .modalBody{padding:10px 16px 16px}
-  .faqList details{border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:8px 0;background:#0f1114}
-  .faqList summary{cursor:pointer;font-weight:600;outline:none}
-  .faqList p{margin:8px 0 0;color:var(--muted);font-size:14px}
+  /* Layout containers */
+  .container{max-width:940px;margin:0 auto;padding:max(14px,env(safe-area-inset-top)) 16px calc(120px + var(--safe-b))}
+  .section{margin:14px 0}
+  .card{
+    background:rgba(17,17,17,.7);
+    border:1px solid rgba(255,255,255,.06);
+    border-radius:20px;
+    padding:16px;
+    box-shadow:0 10px 40px rgba(0,0,0,.25);
+    backdrop-filter:blur(12px) saturate(140%);
+  }
+  .divider{height:1px;background:var(--line);opacity:.9;margin:12px -4px}
+
+  /* Header */
+  .appHeader{
+    position:sticky; top:0; left:0; right:0; z-index:1000;
+    background:linear-gradient(180deg, rgba(0,0,0,.75), rgba(0,0,0,.45));
+    border-bottom:1px solid rgba(255,255,255,.06);
+    backdrop-filter:blur(8px) saturate(140%);
+  }
+  .headInner{max-width:940px;margin:0 auto; padding:12px 16px 14px; display:grid; grid-template-columns:auto 1fr auto; gap:12px; align-items:center}
+  .brand{display:flex; align-items:center; gap:10px}
+  .logo{width:28px;height:28px}
+  .appTitle{margin:0; font-weight:800; letter-spacing:.8px; text-transform:uppercase; font-size:18px}
+  .appTagline{grid-column:1/-1; margin-top:2px; color:var(--muted); font-size:13px}
+
+  /* FAQ & Info buttons */
+  .btn,.chip{appearance:none; border:1px solid var(--line); background:#0f1114; color:inherit; border-radius:14px; padding:12px 14px; font-size:16px; cursor:pointer; transition:transform .06s ease, background .12s ease, box-shadow .2s ease}
+  .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2)); border-color:transparent; color:#001018; font-weight:700; text-transform:uppercase; letter-spacing:.5px}
+  .btn:active,.chip:active{background:var(--tap); transform:scale(.98)}
+  .btn.icon{padding:8px 10px; border-radius:12px; font-size:14px}
+  .faqBtn{justify-self:end}
+
+  /* Titles / alignment */
+  .titleRow{display:flex; align-items:center; justify-content:space-between; gap:8px}
+  .title{font-weight:800; letter-spacing:.5px; text-transform:uppercase; margin:0}
+  .sub{font-size:12px; color:var(--muted)}
+
+  /* Chips / grid */
+  .grid{display:grid; grid-template-columns:1fr 1fr; gap:8px}
+  @media(min-width:720px){ .grid{grid-template-columns:repeat(3,1fr)} }
+  .chip{text-align:left; white-space:normal; line-height:1.3; background:rgba(255,255,255,.04)}
+  .chip.active{background:linear-gradient(90deg,var(--accent),var(--accent-2)); border-color:transparent; color:#001018; font-weight:700}
+
+  .groupLabel{font-size:12px; color:var(--muted); margin:8px 0 6px}
+
+  /* Lists & items */
+  .pill{display:inline-block; margin:0 6px 6px 0; font-size:12px; padding:4px 8px; border:1px solid var(--line); border-radius:999px; background:rgba(255,255,255,.04)}
+  .item{border:1px solid rgba(255,255,255,.06); border-radius:16px; padding:12px; margin:10px 0; background:rgba(255,255,255,.02); transition:transform .2s ease, box-shadow .2s ease}
+  .item:hover{transform:translateY(-2px); box-shadow:0 6px 18px rgba(0,0,0,.25)}
+  .item .meta{font-size:12px; color:var(--muted); margin-bottom:6px}
+  .meta .tag{margin-left:8px; opacity:.9}
+  .helper{font-size:13px; color:var(--muted)}
+  .counter{font-size:13px; color:var(--muted)}
+
+  /* Inputs */
+  .row{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
+  .input, input[type="text"], textarea, select{
+    background:#0f1114; color:inherit; border:1px solid var(--line); border-radius:12px; padding:10px 12px; font-size:15px; width:100%;
+  }
+  textarea{min-height:80px; resize:vertical}
+  .small{font-size:12px; color:var(--muted)}
+
+  /* Confidence bar */
+  .progress{height:10px; border-radius:999px; background:#0e1113; border:1px solid var(--line); overflow:hidden}
+  .progress>i{display:block; height:100%; background:linear-gradient(90deg,var(--accent),var(--accent-2)); width:0%; transition:width .3s ease}
+
+  /* Drag area */
+  .dragZone{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+  .dropCol{border:1px dashed var(--line); border-radius:12px; min-height:120px; padding:10px}
+
+  /* Footer / sticky controls */
+  footer.sticky{position:fixed; left:0; right:0; bottom:0; background:rgba(17,17,17,.85);
+    border-top:1px solid rgba(255,255,255,.06); padding:10px 12px calc(10px + var(--safe-b));
+    display:flex; gap:8px; justify-content:center; align-items:center; z-index:999; backdrop-filter:blur(10px) saturate(140%)}
+  .sig{position:fixed; left:0; right:0; bottom:62px; text-align:center; color:var(--muted); font-size:12px}
+
+  /* Modals (FAQ + Info) */
+  .modalOverlay{position:fixed; inset:0; background:rgba(0,0,0,.6); backdrop-filter:blur(6px) saturate(120%); display:none; align-items:center; justify-content:center; z-index:2000; padding:16px}
+  .modal{width:min(760px,92vw); max-height:80vh; overflow:auto; background:var(--card); border:1px solid rgba(255,255,255,.08); border-radius:20px; box-shadow:0 10px 40px rgba(0,0,0,.4)}
+  .modalHeader{display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border-bottom:1px solid var(--line)}
+  .modalTitle{margin:0; font-size:18px; font-weight:800; letter-spacing:.3px}
+  .modalBody{padding:12px 16px 16px}
+  .modalClose{appearance:none; border:1px solid var(--line); background:#0f1114; color:var(--text); border-radius:12px; padding:8px 10px; font-size:14px; cursor:pointer}
+
+  /* FAQ content */
+  .faqList details{border:1px solid var(--line); border-radius:12px; padding:10px 12px; margin:8px 0; background:#0f1114}
+  .faqList summary{cursor:pointer; font-weight:700}
+  .faqList p{margin:8px 0 0; color:var(--muted); font-size:14px}
+
+  /* Quotes */
+  .quoteCard{margin:14px 0; padding:14px; text-align:center; border-radius:16px; border:1px solid rgba(255,255,255,.06);
+    background:linear-gradient(180deg, rgba(0,133,202,.10), rgba(0,133,202,0))}
+  .quoteText{font-size:14px; opacity:.95}
 </style>
 
+<!-- ====== HEADER ====== -->
 <div class="appHeader">
-  <button id="faqBtn" class="btn ghost faqBtn" type="button" aria-haspopup="dialog" aria-controls="faqModal">FAQ</button>
-  <h1 class="appTitle">Clarity Now</h1>
-  <div class="appTagline">Timeless wisdom for uncertain times</div>
+  <div class="headInner">
+    <!-- Logo (custom spark) -->
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+        <circle cx="32" cy="32" r="30" stroke="url(#g1)" stroke-width="2"/>
+        <path d="M32 10v18M32 36v18M10 32h18M36 32h18M18 18l10 10M36 36l10 10M46 18L36 28M28 36L18 46"
+              stroke="url(#g1)" stroke-width="2" stroke-linecap="round"/>
+        <defs><linearGradient id="g1" x1="0" y1="0" x2="64" y2="64"><stop stop-color="#0085CA"/><stop offset="1" stop-color="#00B0FF"/></linearGradient></defs>
+      </svg>
+      <h1 class="appTitle">Clarity Now</h1>
+    </div>
+    <div></div>
+    <button id="faqBtn" class="btn icon faqBtn" type="button" aria-haspopup="dialog" aria-controls="faqModal">FAQ</button>
+    <div class="appTagline">Simple help for what-ifs & dread — clear perspectives + tiny actions</div>
+  </div>
 </div>
 
-<!-- FAQ Modal -->
+<!-- FAQ MODAL -->
 <div id="faqModal" class="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="faqTitle" style="display:none">
   <div class="modal" role="document">
     <div class="modalHeader">
@@ -81,80 +150,106 @@
       <button id="faqClose" class="modalClose" type="button" aria-label="Close FAQ">Close</button>
     </div>
     <div class="modalBody">
-      <div class="helper" style="margin-bottom:8px">Quick answers to get the most out of the app.</div>
       <div class="faqList">
-        <details><summary>1) What is this app?</summary><p>A calm tool to name what you feel (what-ifs & dread) and get 5 tailored perspectives plus simple exercises.</p></details>
-        <details><summary>2) How do I start?</summary><p>Tap 2–4 symptoms that match your state, then press <b>See top 5</b>. Read one perspective and try the <i>Do now</i> action.</p></details>
-        <details><summary>3) What if the suggestions don’t fit?</summary><p>Add or remove a symptom to re-rank results. Or hit <b>Reset</b> and try again with different picks.</p></details>
-        <details><summary>4) What does the confidence bar mean?</summary><p>It reflects how strongly your chosen symptoms map to the perspective categories. Higher = better match.</p></details>
-        <details><summary>5) Which exercise should I try first?</summary><p><b>5-4-3-2-1</b> for panicky moments, <b>Worry Postponement</b> for loops, <b>Values → micro-act</b> if stuck, <b>Breathing 4-6</b> to downshift.</p></details>
-        <details><summary>6) Can I use this offline?</summary><p>Most features work after the page loads. External “Learn more” links need internet.</p></details>
-        <details><summary>7) Can I save favorite insights?</summary><p>Use your device’s Share or screenshot. A built-in save option may come later.</p></details>
-        <details><summary>8) Is this medical advice?</summary><p>No. It’s general educational support. If you’re in crisis, contact local emergency services.</p></details>
-        <details><summary>9) Will it keep my data?</summary><p>No accounts, no servers—everything runs in your browser. Your inputs stay on your device.</p></details>
-        <details><summary>10) How do I add more perspectives?</summary><p>If you host this yourself, open <code>index.html</code>, find <code>const LIB = [ ]</code>, and paste new items above the closing <code>];</code>.</p></details>
+        <details><summary>1) What is this?</summary><p>Name what you feel, get 5 tailored perspectives (in plain English), then do a tiny action or exercise.</p></details>
+        <details><summary>2) How do I start?</summary><p>Select 2–4 symptoms that match you, tap <b>See top 5</b>, read one perspective, try the <i>Do now</i> step.</p></details>
+        <details><summary>3) Suggestions don’t fit?</summary><p>Toggle a symptom on/off to re-rank, or hit <b>Reset</b> and try a different combo.</p></details>
+        <details><summary>4) What’s the confidence bar?</summary><p>How closely your selections match each category. Higher = better fit.</p></details>
+        <details><summary>5) Which exercise first?</summary><p>Panic → <b>5-4-3-2-1</b>, Loops → <b>Worry Postponement</b>, Stuck → <b>Values → micro-act</b>, Tense → <b>Breathing 4-6</b>.</p></details>
+        <details><summary>6) Offline?</summary><p>Yes, after load. External “Learn more” links need internet.</p></details>
+        <details><summary>7) Saving insights?</summary><p>Use your device’s Share or a screenshot for now.</p></details>
+        <details><summary>8) Medical advice?</summary><p>No. General support only. If in crisis, contact local emergency services.</p></details>
+        <details><summary>9) Privacy?</summary><p>No accounts or servers. Runs in your browser; your inputs stay on your device.</p></details>
+        <details><summary>10) Add more perspectives?</summary><p>Edit <code>index.html</code>, find <code>const LIB = [ … ]</code>, paste items above the closing <code>];</code>.</p></details>
       </div>
     </div>
   </div>
 </div>
 
-<div class="container" id="root">
-  <header>
-    <div>
-      <h1>Clarity Now</h1>
-      <div class="kicker">Targeted help for <b>what-ifs</b> and <b>dread</b>. Minimal, actionable, calm.</div>
+<!-- INFO MODAL (re-used for all “i” buttons) -->
+<div id="infoModal" class="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="infoTitle" style="display:none">
+  <div class="modal" role="document">
+    <div class="modalHeader">
+      <h2 id="infoTitle" class="modalTitle">Info</h2>
+      <button id="infoClose" class="modalClose" type="button" aria-label="Close">Close</button>
     </div>
-    <div class="badge">iOS-friendly • offline-lean</div>
-  </header>
+    <div id="infoBody" class="modalBody"></div>
+  </div>
+</div>
 
-  <!-- Symptoms -->
-  <div class="card">
-    <div class="title">What feels most true right now?</div>
+<!-- ====== APP ====== -->
+<div class="container" id="root">
+
+  <!-- SYMPTOMS -->
+  <section class="section card">
+    <div class="titleRow">
+      <h3 class="title">How are you feeling?</h3>
+      <button class="btn icon" data-info="symptoms">i</button>
+    </div>
+    <div class="sub">Pick 2–4 for sharper suggestions. (You can change later.)</div>
+
+    <div class="divider"></div>
+
     <div class="groupLabel">Uncertain future / what-ifs</div>
     <div id="symW" class="grid"></div>
-    <div class="groupLabel" style="margin-top:10px">Dread / meaning / mortality</div>
+
+    <div class="groupLabel" style="margin-top:12px">Dread / meaning / mortality</div>
     <div id="symE" class="grid"></div>
+
     <div class="row" style="margin-top:12px">
       <button id="go" class="btn primary" type="button">See top 5</button>
-      <button id="clear" class="btn ghost" type="button">Reset</button>
+      <button id="clear" class="btn" type="button">Reset</button>
       <span class="counter" id="count">0 selected</span>
     </div>
-    <div class="helper">Pick 2–4 for sharper suggestions. We rank by fit and show a confidence bar.</div>
-  </div>
+  </section>
 
-  <!-- Results -->
-  <div id="results" class="card" style="display:none">
-    <div class="sectionTitle">
-      <div class="title">Recommended perspectives</div>
-      <div id="tags"></div>
+  <!-- RESULTS -->
+  <section id="results" class="section card" style="display:none">
+    <div class="titleRow">
+      <h3 class="title">Your top perspectives</h3>
+      <button class="btn icon" data-info="results">i</button>
     </div>
-    <div class="row" style="align-items:center;margin-top:-4px">
+    <div class="row" style="align-items:center;margin-top:6px">
       <div class="small">Confidence</div>
       <div class="progress" style="flex:1;min-width:160px"><i id="confBar"></i></div>
       <div class="counter" id="confText">—</div>
     </div>
-    <div id="feed" style="margin-top:8px"></div>
+    <div id="tags" style="margin-top:6px"></div>
 
-    <div class="sep"></div>
+    <div class="divider"></div>
 
-    <!-- What would they say? -->
-    <div class="title">“What would they say?”</div>
-    <div class="row" id="philosChips"></div>
-    <div id="philoOut" class="quote" style="margin-top:6px"></div>
+    <div id="feed"></div>
+
+    <div class="divider"></div>
+
+    <div class="titleRow">
+      <h3 class="title">What would they say?</h3>
+      <button class="btn icon" data-info="coach">i</button>
+    </div>
+    <div class="row" id="philosChips" style="margin-top:6px"></div>
+    <div id="philoOut" class="small" style="margin-top:6px; color:#d0d8df"></div>
 
     <div class="row" style="margin-top:12px">
       <button id="jumpExercises" class="btn" type="button">Open Exercises</button>
       <span class="small">Skim a perspective, then try an exercise.</span>
     </div>
-  </div>
+  </section>
 
-  <!-- Interactive exercises -->
-  <div class="card" id="exercises">
-    <div class="title">Quick settle (interactive)</div>
+  <!-- EXERCISES -->
+  <section class="section card" id="exercises">
+    <div class="titleRow">
+      <h3 class="title">Quick settle (interactive)</h3>
+      <button class="btn icon" data-info="exercises">i</button>
+    </div>
 
     <div class="item">
-      <div class="meta">1) Grounding • Senses</div>
-      <div class="title" style="margin:0">5-4-3-2-1</div>
+      <div class="titleRow">
+        <div>
+          <div class="meta">1) Grounding • Senses</div>
+          <div class="title" style="text-transform:none; letter-spacing:.2px; font-size:16px">5-4-3-2-1</div>
+        </div>
+        <button class="btn icon" data-info="g">i</button>
+      </div>
       <div class="row" style="margin-top:6px">
         <button class="btn" type="button" id="gStart">Start</button>
         <span class="small" id="gStatus">Tap items as you notice them.</span>
@@ -163,8 +258,13 @@
     </div>
 
     <div class="item">
-      <div class="meta">2) CBT • Containment</div>
-      <div class="title" style="margin:0">Worry Postponement</div>
+      <div class="titleRow">
+        <div>
+          <div class="meta">2) CBT • Containment</div>
+          <div class="title" style="text-transform:none; letter-spacing:.2px; font-size:16px">Worry Postponement</div>
+        </div>
+        <button class="btn icon" data-info="wp">i</button>
+      </div>
       <div class="row" style="margin-top:6px">
         <select id="wpMinutes" class="input" style="max-width:160px">
           <option value="5">5 min</option><option value="10">10 min</option>
@@ -177,29 +277,44 @@
     </div>
 
     <div class="item">
-      <div class="meta">3) ACT • Values</div>
-      <div class="title" style="margin:0">Values → micro-act</div>
+      <div class="titleRow">
+        <div>
+          <div class="meta">3) ACT • Values</div>
+          <div class="title" style="text-transform:none; letter-spacing:.2px; font-size:16px">Values → micro-act</div>
+        </div>
+        <button class="btn icon" data-info="val">i</button>
+      </div>
       <div class="row" id="valChips" style="margin-top:6px"></div>
       <div class="small" id="valSuggest"></div>
     </div>
 
     <div class="item">
-      <div class="meta">4) CBT • Evidence</div>
-      <div class="title" style="margin:0">Prediction vs Outcome</div>
+      <div class="titleRow">
+        <div>
+          <div class="meta">4) CBT • Evidence</div>
+          <div class="title" style="text-transform:none; letter-spacing:.2px; font-size:16px">Prediction vs Outcome</div>
+        </div>
+        <button class="btn icon" data-info="el">i</button>
+      </div>
       <div class="row" style="margin-top:6px">
         <input id="elPred" class="input" placeholder="Prediction… (e.g., I’ll freeze on the call)">
         <input id="elOut" class="input" placeholder="Outcome (later)…">
       </div>
       <div class="row" style="margin-top:8px">
         <button class="btn" type="button" id="elAdd">Add</button>
-        <button class="btn ghost" type="button" id="elClear">Clear</button>
+        <button class="btn" type="button" id="elClear">Clear</button>
       </div>
       <div id="elList" class="small" style="margin-top:8px"></div>
     </div>
 
     <div class="item">
-      <div class="meta">5) Decision • Smallest reversible</div>
-      <div class="title" style="margin:0">Decision Dice</div>
+      <div class="titleRow">
+        <div>
+          <div class="meta">5) Decision • Smallest reversible</div>
+          <div class="title" style="text-transform:none; letter-spacing:.2px; font-size:16px">Decision Dice</div>
+        </div>
+        <button class="btn icon" data-info="dd">i</button>
+      </div>
       <div class="row" style="margin-top:6px">
         <input id="ddA" class="input" placeholder="Option A (e.g., send draft)">
         <input id="ddB" class="input" placeholder="Option B (e.g., wait for feedback)">
@@ -211,314 +326,604 @@
     </div>
 
     <div class="item">
-      <div class="meta">6) Meaning • Builder</div>
-      <div class="title" style="margin:0">What actually matters? (drag or tap)</div>
+      <div class="titleRow">
+        <div>
+          <div class="meta">6) Meaning • Builder</div>
+          <div class="title" style="text-transform:none; letter-spacing:.2px; font-size:16px">What matters? (drag or tap)</div>
+        </div>
+        <button class="btn icon" data-info="mb">i</button>
+      </div>
       <div class="row" id="mbChips" style="margin-top:6px"></div>
       <div class="dragZone" style="margin-top:8px">
         <div class="dropCol" id="mbYes" data-col="yes"><div class="small">Matters to me</div></div>
         <div class="dropCol" id="mbNo" data-col="no"><div class="small">Doesn’t matter (now)</div></div>
       </div>
-      <div id="mbOut" class="quote" style="margin-top:8px"></div>
+      <div id="mbOut" class="small" style="margin-top:8px; color:#d0d8df"></div>
     </div>
 
-    <!-- 7) Guided Breathing -->
     <div class="item">
-      <div class="meta">7) Breathing • Calm cycle</div>
-      <div class="title" style="margin:0">Guided Breathing (4 in → 6 out)</div>
+      <div class="titleRow">
+        <div>
+          <div class="meta">7) Breathing • Calm cycle</div>
+          <div class="title" style="text-transform:none; letter-spacing:.2px; font-size:16px">Guided Breathing (4 in → 6 out)</div>
+        </div>
+        <button class="btn icon" data-info="br">i</button>
+      </div>
       <div class="row" style="margin-top:6px">
         <button class="btn" type="button" id="breathStart">Start</button>
-        <button class="btn ghost" type="button" id="breathStop">Stop</button>
+        <button class="btn" type="button" id="breathStop">Stop</button>
         <span id="breathStatus" class="small"></span>
       </div>
       <div style="margin-top:12px;display:flex;justify-content:center">
-        <div id="breathCircle" style="width:140px;height:140px;border-radius:50%;background:var(--accent);opacity:.85;transform:scale(1);transition:transform 4s ease-in-out;box-shadow:0 0 40px rgba(16,185,129,.25)"></div>
+        <div id="breathCircle" style="width:140px;height:140px;border-radius:50%;
+          background:radial-gradient( circle at 50% 50%, rgba(0,176,255,.35), rgba(0,133,202,.9) );
+          transform:scale(1); transition:transform 4s ease-in-out; box-shadow:0 0 40px rgba(0,176,255,.25)"></div>
       </div>
-      <div class="small" style="margin-top:8px">Tip: follow the circle — expand while you inhale, soften while you exhale.</div>
+      <div class="small" style="margin-top:8px">Follow the circle — expand as you inhale, soften as you exhale.</div>
     </div>
-  </div>
+  </section>
 
-  <div class="card helper">Not medical advice. If you’re in crisis, contact local emergency services.</div>
+  <!-- MOTIVATION QUOTE -->
+  <section class="quoteCard">
+    <div id="footerQuote" class="quoteText">“Loading a note for you…”</div>
+  </section>
+
+  <!-- DISCLAIMER -->
+  <section class="section card">
+    <div class="titleRow">
+      <h3 class="title">Note</h3>
+      <button class="btn icon" data-info="legal">i</button>
+    </div>
+    <div class="sub">Not medical advice. If you’re in crisis, contact local emergency services.</div>
+  </section>
 </div>
 
+<!-- Sticky controls -->
+<div class="sig">developed by DK</div>
 <footer class="sticky">
   <button id="homeGo" class="btn primary" type="button">Get top 5</button>
-  <button id="homeClear" class="btn ghost" type="button">Reset</button>
+  <button id="homeClear" class="btn" type="button">Reset</button>
 </footer>
 
 <script>
-  /* ========= DATA ========= */
-  const CATS={WORRY:{name:"Uncertain future / what-ifs"},EXIST:{name:"Dread / meaning / mortality"}};
+/* =======================
+   DATA
+   ======================= */
+const CATS = {
+  WORRY: { name: "Uncertain future / what-ifs" },
+  EXIST: { name: "Dread / meaning / mortality" }
+};
 
-  const SYM_W=[
-    {id:"w1",label:"Catastrophic ‘what if’ loops",map:{WORRY:3}},
-    {id:"w2",label:"Over-planning / repeated checking",map:{WORRY:3}},
-    {id:"w3",label:"Racing thoughts at night",map:{WORRY:2}},
-    {id:"w4",label:"Paralysis choosing next step",map:{WORRY:2,EXIST:1}},
-    {id:"w5",label:"Financial / career uncertainty",map:{WORRY:2}},
-    {id:"w6",label:"Forecasting others’ reactions",map:{WORRY:2}},
-    {id:"w7",label:"Needing perfect info before acting",map:{WORRY:2}},
-    {id:"w8",label:"Reassurance seeking / constant asks",map:{WORRY:2}},
-    {id:"w9",label:"Time pressure about the future",map:{WORRY:2}},
-    {id:"w10",label:"Avoiding decisions to feel safe",map:{WORRY:2,EXIST:1}}
-  ];
-  const SYM_E=[
-    {id:"e1",label:"Sense of dread / heaviness",map:{EXIST:3}},
-    {id:"e2",label:"Emptiness / pointlessness",map:{EXIST:3}},
-    {id:"e3",label:"Mortality salience (time feels short)",map:{EXIST:2}},
-    {id:"e4",label:"Nothing feels ‘right’ to do",map:{EXIST:2,WORRY:1}},
-    {id:"e5",label:"Regret / guilt blocking action",map:{EXIST:2}},
-    {id:"e6",label:"Meaning tied to outcomes",map:{EXIST:2,WORRY:1}},
-    {id:"e7",label:"Loss of motivation / grey mood",map:{EXIST:2}},
-    {id:"e8",label:"Questioning purpose of effort",map:{EXIST:2}},
-    {id:"e9",label:"Comparing life to ideals",map:{EXIST:2}},
-    {id:"e10",label:"Fear choices are irreversible",map:{EXIST:2,WORRY:1}}
-  ];
+/* Easier, clearer symptom language (10 + 10) */
+const SYM_W = [
+  { id:"w1",  label:"Endless “what if?” loops",                map:{WORRY:3} },
+  { id:"w2",  label:"Over-planning & rechecking",              map:{WORRY:3} },
+  { id:"w3",  label:"Can’t switch off at night",               map:{WORRY:2} },
+  { id:"w4",  label:"Stuck choosing the next step",            map:{WORRY:2, EXIST:1} },
+  { id:"w5",  label:"Money or career uncertainty",             map:{WORRY:2} },
+  { id:"w6",  label:"Worried what others will think",          map:{WORRY:2} },
+  { id:"w7",  label:"Needing perfect info before acting",      map:{WORRY:2} },
+  { id:"w8",  label:"Keep asking for reassurance",             map:{WORRY:2} },
+  { id:"w9",  label:"Rushing the future / time pressure",      map:{WORRY:2} },
+  { id:"w10", label:"Avoiding decisions to feel safe",         map:{WORRY:2, EXIST:1} }
+];
+const SYM_E = [
+  { id:"e1",  label:"Heavy feeling / sense of doom",           map:{EXIST:3} },
+  { id:"e2",  label:"Life feels empty or pointless",           map:{EXIST:3} },
+  { id:"e3",  label:"More aware of mortality",                 map:{EXIST:2} },
+  { id:"e4",  label:"Nothing feels right to do",               map:{EXIST:2, WORRY:1} },
+  { id:"e5",  label:"Regret or guilt keeps me stuck",          map:{EXIST:2} },
+  { id:"e6",  label:"Worth tied to results",                   map:{EXIST:2, WORRY:1} },
+  { id:"e7",  label:"Low motivation / grey mood",              map:{EXIST:2} },
+  { id:"e8",  label:"What’s the point of effort?",             map:{EXIST:2} },
+  { id:"e9",  label:"Comparing life to an ideal version",      map:{EXIST:2} },
+  { id:"e10", label:"Afraid choices are irreversible",         map:{EXIST:2, WORRY:1} }
+];
 
-  /* Library (first 50 casual tone) */
-  const LIB=[
-    /* WHAT-IFS (25) */
-    {cat:"WORRY",school:"Stoicism",w:1.0,t:"Dichotomy of Control (Epictetus)",b:"Put your energy where it actually helps. If it’s not yours to control, you can stop carrying it.",a:"Write 3 things you can control today. Do one tiny step now.",u:"https://plato.stanford.edu/entries/epictetus/"},
-    {cat:"WORRY",school:"CBT",w:1.0,t:"Designated Worry Time",b:"Give worry a small daily box so it stops taking the whole day.",a:"Choose a time (e.g., 17:30). Park worries until then.",u:"https://www.psychologytoday.com/us/blog/anxiety-files/201507/worry-postponement"},
-    {cat:"WORRY",school:"Mindfulness",w:0.95,t:"Thoughts as Events (Not Facts)",b:"A thought is just a thought. You don’t have to obey it.",a:"Ask: “Is this helpful right now?” Then return to your task.",u:"https://www.mindful.org/what-is-mindfulness/"},
-    {cat:"WORRY",school:"Behavioral Activation",w:0.95,t:"Act Into Clarity",b:"Clarity shows up after you move, not before.",a:"Take the smallest safe step that moves things forward.",u:"https://www.verywellmind.com/behavioral-activation-1067403"},
-    {cat:"WORRY",school:"CBT",w:0.9,t:"Thought Record / Evidence Ledger",b:"Compare what you predicted with what actually happened. It evens out the fear.",a:"Start a 2-column note: prediction vs. outcome.",u:"https://www.therapistaid.com/therapy-worksheet/cbt-thought-record"},
-    {cat:"WORRY",school:"Stoicism",w:0.9,t:"View From Above",b:"Zoom out. From a wider view, this moment feels smaller and more workable.",a:"Imagine your life 5 years from now. What still matters today?",u:"https://modernstoicism.com/blog/"},
-    {cat:"WORRY",school:"ACT",w:0.9,t:"Accept & Commit",b:"Make room for uncomfortable feelings while you do what matters.",a:"Name one value and take a 10-minute action that expresses it.",u:"https://contextualscience.org/act"},
-    {cat:"WORRY",school:"CBT",w:0.88,t:"Worst / Best / Most Likely",b:"Balance the scary story with two other possible stories.",a:"Write the worst, best, and most likely outcomes. Plan for the likely.",u:"https://www.psychologytools.com/resource/worst-best-most-likely-outcomes/"},
-    {cat:"WORRY",school:"Stoicism",w:0.86,t:"Amor Fati",b:"Treat what happens as material you can use, not just a problem.",a:"Reframe one hassle today as practice for patience or courage.",u:"https://modernstoicism.com/blog/"},
-    {cat:"WORRY",school:"Taoism",w:0.82,t:"Let Mud Settle",b:"When things feel stirred up, more force isn’t the answer. Let the water clear.",a:"Pause 10 minutes. Then choose the lightest next step.",u:"https://plato.stanford.edu/entries/daoism/"},
-    {cat:"WORRY",school:"CBT",w:0.85,t:"Probability Reframe",b:"Possible isn’t the same as probable. That difference matters.",a:"Give your worry a % chance. Adjust your actions to match.",u:"https://www.psychologytools.com/self-help/cognitive-restructuring/"},
-    {cat:"WORRY",school:"Stoicism",w:0.8,t:"Premeditatio Malorum",b:"Quietly picture the bumps ahead so they don’t shock you.",a:"Note one likely obstacle and your calm response plan.",u:"https://modernstoicism.com/blog/"},
-    {cat:"WORRY",school:"Mindfulness",w:0.8,t:"Noting: ‘Thinking/Futuring’",b:"Gently label what the mind is doing. The grip loosens.",a:"When caught in loops, say “thinking, thinking,” then return.",u:"https://www.mindful.org/meditation/noting/"},
-    {cat:"WORRY",school:"Positive Psych",w:0.8,t:"Use Signature Strengths",b:"Lead with what you’re naturally good at to make progress feel easier.",a:"Pick a strength (e.g., curiosity). Use it for 15 minutes.",u:"https://www.viacharacter.org/character-strengths"},
-    {cat:"WORRY",school:"CBT",w:0.8,t:"One-Shot Rule",b:"Endless tweaking increases anxiety. One good pass is enough.",a:"Review once, then ship. No extra loops.",u:"https://www.anxietycanada.com/articles/perfectionism/"},
-    {cat:"WORRY",school:"ACT",w:0.8,t:"Values Compass",b:"Let values steer when fear is loud.",a:"Write one sentence: “Today I choose to be ___.”",u:"https://contextualscience.org/act_values"},
-    {cat:"WORRY",school:"Taoism",w:0.76,t:"Wu-wei (Effortless Action)",b:"Try ease before effort. Often the simple path works.",a:"Pick the least-effort option that still moves you forward.",u:"https://plato.stanford.edu/entries/daoism/"},
-    {cat:"WORRY",school:"Positive Psych",w:0.76,t:"Gratitude Offset",b:"Name what’s okay to counterbalance the mind’s threat bias.",a:"Note 3 specific things you appreciate right now.",u:"https://greatergood.berkeley.edu/topic/gratitude"},
-    {cat:"WORRY",school:"CBT",w:0.76,t:"Behavioral Experiment",b:"Test your scary prediction in a tiny, safe way.",a:"Design a micro-experiment and see what actually happens.",u:"https://www.psychologytools.com/resource/behavioral-experiments/"},
-    {cat:"WORRY",school:"Stoicism",w:0.74,t:"Role Ethics: Today’s Duty",b:"Do your role well; let the results be what they are.",a:"Name a role (friend, maker, teammate). Do one fitting action.",u:"https://plato.stanford.edu/entries/stoicism/"},
-    {cat:"WORRY",school:"Mindfulness",w:0.72,t:"Body as Anchor",b:"Come back to the body when the mind spins.",a:"Feel the soles of your feet for 60 seconds.",u:"https://www.mindful.org/a-3-minute-body-scan-meditation-to-cultivate-mindfulness/"},
-    {cat:"WORRY",school:"CBT",w:0.7,t:"Time-boxed Planning",b:"Plan for a bit, then stop and act.",a:"Set a 10-minute timer to plan. When it ends, take one step.",u:"https://francescocirillo.com/pages/pomodoro-technique"},
-    {cat:"WORRY",school:"Stoicism",w:0.7,t:"Check Impressions (Epictetus)",b:"Pause before you believe a first reaction.",a:"Ask: “Is this a fact, or my story about it?”",u:"https://plato.stanford.edu/entries/epictetus/"},
-    {cat:"WORRY",school:"Positive Psych",w:0.7,t:"Tiny Wins → Momentum",b:"Small wins beat overthinking. Momentum changes mood.",a:"Finish a 2-minute task right now.",u:"https://tinyhabits.com/"},
-    {cat:"WORRY",school:"Sleep Science",w:0.7,t:"Stimulus Control (Sleep)",b:"Protect your bed for sleep so it’s not a worry zone.",a:"If awake > 20 minutes, get up for a short break.",u:"https://www.sleepfoundation.org/insomnia/treatment/stimulus-control-therapy"},
+/* Library (50) — each item now includes:
+   c: “approach context” line (simple explanation) */
+const LIB = [
+  /* WHAT-IFS (25) */
+  {cat:"WORRY",school:"Stoicism",w:1.0,t:"Dichotomy of Control (Epictetus)",
+    c:"Stoic skill: focus on what’s in your hands; release what isn’t.",
+    b:"Put your energy where it actually helps. If it’s not yours to control, you can stop carrying it.",
+    a:"Write 3 things you can control today. Do one tiny step now.",
+    u:"https://plato.stanford.edu/entries/epictetus/"},
+  {cat:"WORRY",school:"CBT",w:1.0,t:"Designated Worry Time",
+    c:"CBT tactic: put worry in a small box so it stops leaking everywhere.",
+    b:"Give worry a small daily box so it stops taking the whole day.",
+    a:"Choose a time (e.g., 17:30). Park worries until then.",
+    u:"https://www.psychologytoday.com/us/blog/anxiety-files/201507/worry-postponement"},
+  {cat:"WORRY",school:"Mindfulness",w:0.95,t:"Thoughts as Events (Not Facts)",
+    c:"Mindfulness: see thoughts as passing events, not orders.",
+    b:"A thought is just a thought. You don’t have to obey it.",
+    a:"Ask: “Is this helpful right now?” Then return to your task.",
+    u:"https://www.mindful.org/what-is-mindfulness/"},
+  {cat:"WORRY",school:"Behavioral Activation",w:0.95,t:"Act Into Clarity",
+    c:"Behavioral activation: action first, clarity after.",
+    b:"Clarity shows up after you move, not before.",
+    a:"Take the smallest safe step that moves things forward.",
+    u:"https://www.verywellmind.com/behavioral-activation-1067403"},
+  {cat:"WORRY",school:"CBT",w:0.9,t:"Thought Record / Evidence Ledger",
+    c:"CBT diary: compare your predictions with outcomes.",
+    b:"Compare what you predicted with what actually happened. It evens out the fear.",
+    a:"Start a 2-column note: prediction vs. outcome.",
+    u:"https://www.therapistaid.com/therapy-worksheet/cbt-thought-record"},
+  {cat:"WORRY",school:"Stoicism",w:0.9,t:"View From Above",
+    c:"Stoic zoom-out: right-size today by seeing the bigger picture.",
+    b:"Zoom out. From a wider view, this moment feels smaller and more workable.",
+    a:"Imagine your life 5 years from now. What still matters today?",
+    u:"https://modernstoicism.com"},
+  {cat:"WORRY",school:"ACT",w:0.9,t:"Accept & Commit",
+    c:"ACT: make room for feelings; move toward values.",
+    b:"Make room for uncomfortable feelings while you do what matters.",
+    a:"Name one value and take a 10-minute action that expresses it.",
+    u:"https://contextualscience.org/act"},
+  {cat:"WORRY",school:"CBT",w:0.88,t:"Worst / Best / Most Likely",
+    c:"CBT reframe: balance catastrophizing with alternatives.",
+    b:"Balance the scary story with two other possible stories.",
+    a:"Write the worst, best, and most likely outcomes. Plan for the likely.",
+    u:"https://www.psychologytools.com/resource/worst-best-most-likely-outcomes/"},
+  {cat:"WORRY",school:"Stoicism",w:0.86,t:"Amor Fati",
+    c:"Stoic stance: treat events as material for your character.",
+    b:"Treat what happens as material you can use, not just a problem.",
+    a:"Reframe one hassle today as practice for patience or courage.",
+    u:"https://modernstoicism.com"},
+  {cat:"WORRY",school:"Taoism",w:0.82,t:"Let Mud Settle",
+    c:"Taoist ease: when water is cloudy, wait, don’t thrash.",
+    b:"When things feel stirred up, more force isn’t the answer. Let the water clear.",
+    a:"Pause 10 minutes. Then choose the lightest next step.",
+    u:"https://plato.stanford.edu/entries/daoism/"},
+  {cat:"WORRY",school:"CBT",w:0.85,t:"Probability Reframe",
+    c:"CBT reality check: possible ≠ probable.",
+    b:"Possible isn’t the same as probable. That difference matters.",
+    a:"Give your worry a % chance. Adjust your actions to match.",
+    u:"https://www.psychologytools.com/self-help/cognitive-restructuring/"},
+  {cat:"WORRY",school:"Stoicism",w:0.8,t:"Premeditatio Malorum",
+    c:"Stoic prep: visualize bumps so they don’t shock you.",
+    b:"Quietly picture the bumps ahead so they don’t surprise you.",
+    a:"Note one likely obstacle and your calm if-then plan.",
+    u:"https://modernstoicism.com"},
+  {cat:"WORRY",school:"Mindfulness",w:0.8,t:"Noting: “Thinking / Futuring”",
+    c:"Mindfulness label: name the process to loosen its grip.",
+    b:"Gently label what the mind is doing. The grip loosens.",
+    a:"When looping, say “thinking, thinking,” then return.",
+    u:"https://www.mindful.org/meditation/noting/"},
+  {cat:"WORRY",school:"Positive Psych",w:0.8,t:"Use Signature Strengths",
+    c:"Positive psych: lead with your best trait to cut friction.",
+    b:"Lead with what you’re naturally good at to make progress easier.",
+    a:"Pick a strength (e.g., curiosity). Use it for 15 minutes.",
+    u:"https://www.viacharacter.org/character-strengths"},
+  {cat:"WORRY",school:"CBT",w:0.8,t:"One-Shot Rule",
+    c:"Anti-perfectionism: one good pass, then ship.",
+    b:"Endless tweaking increases anxiety. One good pass is enough.",
+    a:"Review once, then ship. No extra loops.",
+    u:"https://www.anxietycanada.com/articles/perfectionism/"},
+  {cat:"WORRY",school:"ACT",w:0.8,t:"Values Compass",
+    c:"ACT compass: let values steer when fear is loud.",
+    b:"Let values steer when fear is loud.",
+    a:"Write one line: “Today I choose to be ___.”",
+    u:"https://contextualscience.org/act_values"},
+  {cat:"WORRY",school:"Taoism",w:0.76,t:"Wu-wei (Effortless Action)",
+    c:"Taoist ease: try less force before more.",
+    b:"Try ease before effort. Often the simple path works.",
+    a:"Pick the least-effort option that still moves you forward.",
+    u:"https://plato.stanford.edu/entries/daoism/"},
+  {cat:"WORRY",school:"Positive Psych",w:0.76,t:"Gratitude Offset",
+    c:"Broaden-and-build: noticing good widens attention.",
+    b:"Name what’s okay to counter the mind’s threat bias.",
+    a:"Note 3 specific things you appreciate right now.",
+    u:"https://greatergood.berkeley.edu/topic/gratitude"},
+  {cat:"WORRY",school:"CBT",w:0.76,t:"Behavioral Experiment",
+    c:"CBT test: run a tiny safe test of your prediction.",
+    b:"Test your scary prediction in a tiny, safe way.",
+    a:"Design a micro-experiment and see what actually happens.",
+    u:"https://www.psychologytools.com/resource/behavioral-experiments/"},
+  {cat:"WORRY",school:"Stoicism",w:0.74,t:"Role Ethics: Today’s Duty",
+    c:"Stoic duty: do your role well; let outcomes go.",
+    b:"Do your role well; let the results be what they are.",
+    a:"Name a role (friend, maker, teammate). Do one fitting act.",
+    u:"https://plato.stanford.edu/entries/stoicism/"},
+  {cat:"WORRY",school:"Mindfulness",w:0.72,t:"Body as Anchor",
+    c:"Mindfulness anchor: return to sensation, not story.",
+    b:"Come back to the body when the mind spins.",
+    a:"Feel the soles of your feet for 60 seconds.",
+    u:"https://www.mindful.org/a-3-minute-body-scan-meditation-to-cultivate-mindfulness/"},
+  {cat:"WORRY",school:"CBT",w:0.7,t:"Time-boxed Planning",
+    c:"Workflow: plan briefly, then act.",
+    b:"Plan for a bit, then stop and act.",
+    a:"Set a 10-minute timer to plan. When it ends, take one step.",
+    u:"https://francescocirillo.com/pages/pomodoro-technique"},
+  {cat:"WORRY",school:"Stoicism",w:0.7,t:"Check Impressions (Epictetus)",
+    c:"Stoic pause: question first reactions.",
+    b:"Pause before you believe a first reaction.",
+    a:"Ask: “Is this a fact, or my story about it?”",
+    u:"https://plato.stanford.edu/entries/epictetus/"},
+  {cat:"WORRY",school:"Positive Psych",w:0.7,t:"Tiny Wins → Momentum",
+    c:"Motivation: small wins change state fast.",
+    b:"Small wins beat overthinking. Momentum changes mood.",
+    a:"Finish a 2-minute task right now.",
+    u:"https://tinyhabits.com/"},
+  {cat:"WORRY",school:"Sleep Science",w:0.7,t:"Stimulus Control (Sleep)",
+    c:"Sleep hygiene: keep bed for sleep (not worry).",
+    b:"Protect your bed for sleep so it’s not a worry zone.",
+    a:"If awake > 20 minutes, get up for a short break.",
+    u:"https://www.sleepfoundation.org/insomnia/treatment/stimulus-control-therapy"},
 
-    /* DREAD / MEANING (25) */
-    {cat:"EXIST",school:"Existentialism",w:1.0,t:"Dread as Freedom’s Shadow (Kierkegaard)",b:"Feeling dread can mean you’re facing real choice. That’s courage territory.",a:"Pick one value and take one small loyal act.",u:"https://plato.stanford.edu/entries/kierkegaard/"},
-    {cat:"EXIST",school:"Stoicism",w:0.96,t:"Memento Mori (Tender)",b:"Remembering life is short helps you spend it on what matters.",a:"Ask: “What matters in this next hour?” Do that first.",u:"https://modernstoicism.com/blog/"},
-    {cat:"EXIST",school:"Mindfulness",w:0.95,t:"RAIN for Difficult Emotions",b:"Recognize, Allow, Investigate, Nurture. Meet feelings with kindness.",a:"Do one gentle RAIN pass on the feeling here.",u:"https://www.mindful.org/rain-mindfulness-practice-for-difficult-emotions/"},
-    {cat:"EXIST",school:"CBT",w:0.92,t:"Action Before Insight",b:"Meaning often follows movement. Start, then think.",a:"Do 2 minutes of the thing you’ve been avoiding.",u:"https://www.verywellmind.com/behavioral-activation-1067403"},
-    {cat:"EXIST",school:"Philosophy",w:0.9,t:"Meaning in Life — Overview",b:"Meaning grows from coherence, purpose, and feeling you matter.",a:"Pick one small purpose for today and act on it.",u:"https://plato.stanford.edu/entries/meaning-life/"},
-    {cat:"EXIST",school:"Taoism",w:0.86,t:"Return to Simplicity",b:"Let today be simpler than your mind demands.",a:"Make tea or do one task slowly and fully.",u:"https://plato.stanford.edu/entries/daoism/"},
-    {cat:"EXIST",school:"Existentialism",w:0.9,t:"Author Your Stance",b:"Even not choosing is a choice. You get to write your line.",a:"Finish this: “Today I choose to be ___.”",u:"https://plato.stanford.edu/entries/existentialism/"},
-    {cat:"EXIST",school:"Buddhism",w:0.85,t:"Impermanence of Moods",b:"Feelings rise and fall. You are more than today’s weather.",a:"Notice the beginning, middle, and end of this mood.",u:"https://plato.stanford.edu/entries/early-buddhism/"},
-    {cat:"EXIST",school:"Stoicism",w:0.85,t:"Role Ethics (Marcus/Seneca)",b:"Live your chosen roles with care; outcomes are extra.",a:"Pick a role and do one kind, fitting act.",u:"https://plato.stanford.edu/entries/stoicism/"},
-    {cat:"EXIST",school:"ACT",w:0.85,t:"Defusion: Stories ≠ Orders",b:"A thought is a story, not a command. You choose the next step.",a:"Preface tough thoughts with: “I’m noticing the thought that…”",u:"https://contextualscience.org/act_defusion"},
-    {cat:"EXIST",school:"Positive Psych",w:0.8,t:"Savor the Small",b:"Small good moments count. Let them actually land.",a:"Notice one pleasant detail and linger for a few breaths.",u:"https://positivepsychology.com/savoring/"},
-    {cat:"EXIST",school:"Taoism",w:0.8,t:"The Uncarved Block (Pu)",b:"Stop over-optimizing. Simple can be beautiful and enough.",a:"Do it once, simply. No extra polish.",u:"https://en.wikipedia.org/wiki/Pu_(philosophy)"},
-    {cat:"EXIST",school:"Existentialism",w:0.8,t:"Responsibility ≠ Blame",b:"Take the next step you can own—without beating yourself up.",a:"Name one step you own today. Just do that.",u:"https://plato.stanford.edu/entries/existentialism/"},
-    {cat:"EXIST",school:"Compassion Science",w:0.8,t:"Compassion Posture",b:"Strong back, soft front. Kindness helps you move again.",a:"Relax your face; lengthen your spine; speak to yourself kindly.",u:"https://greatergood.berkeley.edu/article/item/try_this_compassion_meditation"},
-    {cat:"EXIST",school:"Stoicism",w:0.8,t:"Focus on the Hour",b:"Life happens in hours, not years. Win this one.",a:"Define one honorable thing for the next hour. Do it.",u:"https://en.wikipedia.org/wiki/Meditations"},
-    {cat:"EXIST",school:"ACT",w:0.78,t:"Values Clarification",b:"When you forget what matters, reselect and continue.",a:"Pick 1–2 core values for today. Align one action.",u:"https://contextualscience.org/act_values"},
-    {cat:"EXIST",school:"Psych Science",w:0.76,t:"Cognitive Reappraisal",b:"Change the frame; the feeling often shifts with it.",a:"Write two lines that tell a kinder, truer version.",u:"https://www.apa.org/monitor/2016/11/cover-cognitive-reappraisal"},
-    {cat:"EXIST",school:"Logotherapy",w:0.75,t:"Meaning via Responsibility",b:"Meaning grows when you take something on.",a:"Choose one small responsibility and follow through.",u:"https://www.viktorfrankl.org/what-is-logotherapy/"},
-    {cat:"EXIST",school:"Positive Psych",w:0.75,t:"Follow Quiet Aliveness (Flow)",b:"Go where attention naturally comes alive.",a:"Choose the task that feels quietly energizing.",u:"https://positivepsychology.com/mihaly-csikszentmihalyi-father-of-flow/"},
-    {cat:"EXIST",school:"Absurdism",w:0.75,t:"Act Without Ultimate Proof (Camus)",b:"No final answers needed to do the humane thing.",a:"Do the humane next step anyway.",u:"https://plato.stanford.edu/entries/camus/"},
-    {cat:"EXIST",school:"Mindfulness",w:0.74,t:"Meta-awareness",b:"Notice awareness itself. Less tangling with thoughts.",a:"Rest as open attention for 60 seconds.",u:"https://www.mindful.org/the-science-of-meta-awareness/"},
-    {cat:"EXIST",school:"Stoicism",w:0.72,t:"Internal Scoreboard (Virtue)",b:"Score your day by character, not applause.",a:"Pick a virtue (e.g., honesty) to practice today.",u:"https://plato.stanford.edu/entries/stoicism/"},
-    {cat:"EXIST",school:"Self-Compassion",w:0.72,t:"Treat Yourself as a Friend",b:"Warmth reduces shame and stuckness.",a:"Say one genuinely kind sentence to yourself out loud.",u:"https://self-compassion.org/"},
-    {cat:"EXIST",school:"Prosocial",w:0.7,t:"Contribution Scan",b:"Small helping acts boost meaning fast.",a:"Do one tiny helpful thing for someone nearby.",u:"https://greatergood.berkeley.edu/topic/altruism"},
-    {cat:"EXIST",school:"CBT",w:0.7,t:"Interrupt Rumination",b:"Change your context to change the loop.",a:"Stand up, look out a window, take three slow breaths.",u:"https://www.apa.org/monitor/2013/07-08/rumination"}
-  ];
+  /* DREAD / MEANING (25) */
+  {cat:"EXIST",school:"Existentialism",w:1.0,t:"Dread as Freedom’s Shadow (Kierkegaard)",
+    c:"Existential: dread appears when you face real choice.",
+    b:"Feeling dread can mean you’re facing real choice. That’s courage territory.",
+    a:"Pick one value and take one small loyal act.",
+    u:"https://plato.stanford.edu/entries/kierkegaard/"},
+  {cat:"EXIST",school:"Stoicism",w:0.96,t:"Memento Mori (Tender)",
+    c:"Stoic clarity: remembering mortality sharpens priorities.",
+    b:"Remembering life is short helps you spend it on what matters.",
+    a:"Ask: “What matters in this next hour?” Do that first.",
+    u:"https://modernstoicism.com"},
+  {cat:"EXIST",school:"Mindfulness",w:0.95,t:"RAIN for Difficult Emotions",
+    c:"Mindfulness script: Recognize, Allow, Investigate, Nurture.",
+    b:"Meet feelings with kindness using RAIN.",
+    a:"Do one gentle RAIN pass on the feeling here.",
+    u:"https://www.mindful.org/rain-mindfulness-practice-for-difficult-emotions/"},
+  {cat:"EXIST",school:"CBT",w:0.92,t:"Action Before Insight",
+    c:"Activation: move first; meaning often follows.",
+    b:"Meaning often follows movement. Start, then think.",
+    a:"Do 2 minutes of the thing you’ve been avoiding.",
+    u:"https://www.verywellmind.com/behavioral-activation-1067403"},
+  {cat:"EXIST",school:"Philosophy",w:0.9,t:"Meaning in Life — Overview",
+    c:"Philosophy survey: coherence, purpose, significance.",
+    b:"Meaning grows from coherence, purpose, and feeling you matter.",
+    a:"Pick one small purpose for today and act on it.",
+    u:"https://plato.stanford.edu/entries/meaning-life/"},
+  {cat:"EXIST",school:"Taoism",w:0.86,t:"Return to Simplicity",
+    c:"Taoist simplicity: do one ordinary act fully.",
+    b:"Let today be simpler than your mind demands.",
+    a:"Make tea or do one task slowly and fully.",
+    u:"https://plato.stanford.edu/entries/daoism/"},
+  {cat:"EXIST",school:"Existentialism",w:0.9,t:"Author Your Stance",
+    c:"Existential authorship: even not choosing is choosing.",
+    b:"You get to write your line.",
+    a:"Finish this: “Today I choose to be ___.”",
+    u:"https://plato.stanford.edu/entries/existentialism/"},
+  {cat:"EXIST",school:"Buddhism",w:0.85,t:"Impermanence of Moods",
+    c:"Buddhist insight: feelings are weather, not essence.",
+    b:"Feelings rise and fall. You are more than today’s weather.",
+    a:"Notice the beginning, middle, and end of this mood.",
+    u:"https://plato.stanford.edu/entries/early-buddhism/"},
+  {cat:"EXIST",school:"Stoicism",w:0.85,t:"Role Ethics (Marcus/Seneca)",
+    c:"Stoic roles: live your roles well; outcomes are extra.",
+    b:"Live your chosen roles with care; outcomes are extra.",
+    a:"Pick a role and do one kind, fitting act.",
+    u:"https://plato.stanford.edu/entries/stoicism/"},
+  {cat:"EXIST",school:"ACT",w:0.85,t:"Defusion: Stories ≠ Orders",
+    c:"ACT defusion: thoughts are stories, not commands.",
+    b:"A thought is a story, not a command. You choose the next step.",
+    a:"Prefix with: “I’m noticing the thought that…”",
+    u:"https://contextualscience.org/act_defusion"},
+  {cat:"EXIST",school:"Positive Psych",w:0.8,t:"Savor the Small",
+    c:"Savoring: let the small good actually land.",
+    b:"Small good moments count. Linger for a few breaths.",
+    a:"Notice one pleasant detail and linger.",
+    u:"https://positivepsychology.com/savoring/"},
+  {cat:"EXIST",school:"Taoism",w:0.8,t:"The Uncarved Block (Pu)",
+    c:"Taoist ‘Pu’: simple can be enough.",
+    b:"Stop over-optimizing. Simple can be beautiful.",
+    a:"Do it once, simply. No extra polish.",
+    u:"https://en.wikipedia.org/wiki/Pu_(philosophy)"},
+  {cat:"EXIST",school:"Existentialism",w:0.8,t:"Responsibility ≠ Blame",
+    c:"Existential responsibility: own the next step without shame.",
+    b:"Take the next step you can own—without beating yourself up.",
+    a:"Name one step you own today. Do just that.",
+    u:"https://plato.stanford.edu/entries/existentialism/"},
+  {cat:"EXIST",school:"Compassion Science",w:0.8,t:"Compassion Posture",
+    c:"Embodied kindness: strong back, soft front.",
+    b:"Kindness helps you move again.",
+    a:"Relax your face; lengthen your spine; speak kindly to yourself.",
+    u:"https://greatergood.berkeley.edu/article/item/try_this_compassion_meditation"},
+  {cat:"EXIST",school:"Stoicism",w:0.8,t:"Focus on the Hour",
+    c:"Stoic focus: live by present duties.",
+    b:"Life happens in hours, not years. Win this one.",
+    a:"Define one honorable thing for the next hour. Do it.",
+    u:"https://en.wikipedia.org/wiki/Meditations"},
+  {cat:"EXIST",school:"ACT",w:0.78,t:"Values Clarification",
+    c:"ACT values: re-select what matters and continue.",
+    b:"When you forget what matters, reselect and continue.",
+    a:"Pick 1–2 core values for today. Align one action.",
+    u:"https://contextualscience.org/act_values"},
+  {cat:"EXIST",school:"Psych Science",w:0.76,t:"Cognitive Reappraisal",
+    c:"Reframing: the story you tell changes how it feels.",
+    b:"Change the frame; the feeling often shifts with it.",
+    a:"Write two lines that tell a kinder, truer version.",
+    u:"https://www.apa.org/monitor/2016/11/cover-cognitive-reappraisal"},
+  {cat:"EXIST",school:"Logotherapy",w:0.75,t:"Meaning via Responsibility",
+    c:"Frankl: purpose emerges through what you take on.",
+    b:"Meaning grows when you take something on.",
+    a:"Choose one small responsibility and follow through.",
+    u:"https://www.viktorfrankl.org/what-is-logotherapy/"},
+  {cat:"EXIST",school:"Positive Psych",w:0.75,t:"Follow Quiet Aliveness (Flow)",
+    c:"Flow: go where attention naturally engages.",
+    b:"Go where attention quietly comes alive.",
+    a:"Choose the task that feels energizing.",
+    u:"https://positivepsychology.com/mihaly-csikszentmihalyi-father-of-flow/"},
+  {cat:"EXIST",school:"Absurdism",w:0.75,t:"Act Without Ultimate Proof (Camus)",
+    c:"Camus: no final answers needed to act humanely.",
+    b:"Do the humane next step anyway.",
+    a:"Pick the human thing over the perfect answer.",
+    u:"https://plato.stanford.edu/entries/camus/"},
+  {cat:"EXIST",school:"Mindfulness",w:0.74,t:"Meta-awareness",
+    c:"Meta-awareness: notice awareness itself, tangle less.",
+    b:"Notice awareness itself. Less tangling with thoughts.",
+    a:"Rest as open attention for 60 seconds.",
+    u:"https://www.mindful.org/the-science-of-meta-awareness/"},
+  {cat:"EXIST",school:"Stoicism",w:0.72,t:"Internal Scoreboard (Virtue)",
+    c:"Stoic virtue: score by character, not applause.",
+    b:"Score your day by character, not applause.",
+    a:"Pick a virtue (e.g., honesty) to practice today.",
+    u:"https://plato.stanford.edu/entries/stoicism/"},
+  {cat:"EXIST",school:"Self-Compassion",w:0.72,t:"Treat Yourself as a Friend",
+    c:"Self-compassion: warmth reduces shame and stuckness.",
+    b:"Be on your own side.",
+    a:"Say one kind sentence to yourself out loud.",
+    u:"https://self-compassion.org/"},
+  {cat:"EXIST",school:"Prosocial",w:0.7,t:"Contribution Scan",
+    c:"Prosocial boost: helping others increases meaning.",
+    b:"Small helping acts boost meaning fast.",
+    a:"Do one tiny helpful thing for someone nearby.",
+    u:"https://greatergood.berkeley.edu/topic/altruism"},
+  {cat:"EXIST",school:"CBT",w:0.7,t:"Interrupt Rumination",
+    c:"CBT break: change context to break loops.",
+    b:"Change your context to change the loop.",
+    a:"Stand up, look out a window, take three slow breaths.",
+    u:"https://www.apa.org/monitor/2013/07-08/rumination"}
+];
 
-  /* ========= BUILD UI ========= */
-  const $w=document.getElementById('symW'), $e=document.getElementById('symE'), $count=document.getElementById('count');
-  function makeChip(s){const b=document.createElement('button'); b.type='button'; b.className='chip'; b.textContent=s.label; b.dataset.id=s.id; b.onclick=()=>{b.classList.toggle('active'); updateCount();}; return b;}
-  SYM_W.forEach(s=>{$w.appendChild(makeChip(s))}); SYM_E.forEach(s=>{$e.appendChild(makeChip(s))});
-  function updateCount(){const n=document.querySelectorAll('.chip.active').length; $count.textContent=n+" selected";}
+/* =======================
+   BUILD UI
+   ======================= */
+const $w=document.getElementById('symW'), $e=document.getElementById('symE'), $count=document.getElementById('count');
+function makeChip(s){const b=document.createElement('button'); b.type='button'; b.className='chip'; b.textContent=s.label; b.dataset.id=s.id; b.onclick=()=>{b.classList.toggle('active'); updateCount();}; return b;}
+SYM_W.forEach(s=>$w.appendChild(makeChip(s)));
+SYM_E.forEach(s=>$e.appendChild(makeChip(s)));
+function updateCount(){const n=document.querySelectorAll('.chip.active').length; $count.textContent=n+" selected";}
 
-  function compute(){
-    const active=[...document.querySelectorAll('.chip.active')].map(el=>el.dataset.id);
-    if(active.length===0){alert('Pick at least one.'); return;}
-    const scores={WORRY:0,EXIST:0};
-    const all=[...SYM_W,...SYM_E];
-    active.forEach(id=>{const s=all.find(x=>x.id===id); for(const k in s.map){scores[k]+=s.map[k];}});
-    const maxPerSym=3, maxPossible=active.length*maxPerSym, total=scores.WORRY+scores.EXIST;
-    let conf=Math.min(1, total/(maxPossible||1));
-    const dominance=Math.abs(scores.WORRY-scores.EXIST)/(total||1);
-    conf=Math.min(1, conf*0.8 + dominance*0.2);
-    render(scores, conf);
-  }
+/* ENGINE */
+function compute(){
+  const active=[...document.querySelectorAll('.chip.active')].map(el=>el.dataset.id);
+  if(active.length===0){alert('Pick at least one.'); return;}
+  const scores={WORRY:0,EXIST:0}, all=[...SYM_W,...SYM_E];
+  active.forEach(id=>{const s=all.find(x=>x.id===id); for(const k in s.map){scores[k]+=s.map[k];}});
+  const maxPerSym=3, maxPossible=active.length*maxPerSym, total=scores.WORRY+scores.EXIST;
+  let conf=Math.min(1, total/(maxPossible||1)); const dominance=Math.abs(scores.WORRY-scores.EXIST)/(total||1);
+  conf=Math.min(1, conf*0.8 + dominance*0.2);
+  render(scores, conf);
+}
 
-  function render(scores, conf){
-    const $res=document.getElementById('results'), $tags=document.getElementById('tags'), $feed=document.getElementById('feed');
-    $res.style.display='block'; $tags.innerHTML=''; $feed.innerHTML='';
-    Object.entries(scores).sort((a,b)=>b[1]-a[1]).forEach(([k,v])=>{ if(v>0){const p=document.createElement('span'); p.className='pill'; p.textContent=CATS[k].name+' • '+v; $tags.appendChild(p);} });
-    document.getElementById('confText').textContent=Math.round(conf*100)+'%';
-    document.getElementById('confBar').style.width=(Math.round(conf*100))+'%';
-    const items=LIB.map((it,ix)=>({ix,score:(scores[it.cat]||0)*(it.w||1),...it}))
-                   .filter(x=>x.score>0).sort((a,b)=>b.score-a.score).slice(0,5);
-    if(items.length===0){$feed.innerHTML='<div class="helper">No matches yet. Try one more symptom.</div>'; return;}
-    items.forEach(it=>{
-      const d=document.createElement('div'); d.className='item';
-      d.innerHTML=`<div class="meta">${it.school} <span class="tag">• ${CATS[it.cat].name}</span></div>
-        <div class="title" style="margin:0">${it.t}</div>
-        <div style="margin-top:6px">${it.b}</div>
-        <div class="sep"></div>
-        <div style="font-size:13px"><b>Do now:</b> ${it.a}</div>
-        <div style="margin-top:10px"><a href="${it.u}" target="_blank" rel="noopener">Learn more ↗</a></div>`;
-      $feed.appendChild(d);
-    });
-    const dom = scores.WORRY >= scores.EXIST ? 'WORRY' : 'EXIST';
-    currentPhiloCategory = dom;
-    document.getElementById('philoOut').textContent = 'Pick a philosopher to hear their take for your current state.';
-  }
+function render(scores, conf){
+  const $res=document.getElementById('results'), $tags=document.getElementById('tags'), $feed=document.getElementById('feed');
+  $res.style.display='block'; $tags.innerHTML=''; $feed.innerHTML='';
+  Object.entries(scores).sort((a,b)=>b[1]-a[1]).forEach(([k,v])=>{ if(v>0){const p=document.createElement('span'); p.className='pill'; p.textContent=CATS[k].name+' • '+v; $tags.appendChild(p);} });
+  document.getElementById('confText').textContent=Math.round(conf*100)+'%';
+  document.getElementById('confBar').style.width=(Math.round(conf*100))+'%';
 
-  /* “What would they say?” */
-  const PHILOS=['Marcus Aurelius','Epictetus','Buddha','Camus','Viktor Frankl'];
-  const PHILO_QUOTES={
-    WORRY:{
-      'Marcus Aurelius':'“If you are distressed by anything external, the pain is not due to the thing itself but to your estimate of it.” (Meditations)',
-      'Epictetus':'“Some things are up to us and some are not.” Focus on the former; let the latter be.',
-      'Buddha':'Notice the arising of worry; see it as a passing event in the mind.',
-      'Camus':'Act with integrity in the uncertainty; meaning is made in the doing.',
-      'Viktor Frankl':'Between stimulus and response there is space. Choose your response.'
-    },
-    EXIST:{
-      'Marcus Aurelius':'“You could leave life right now. Let that determine what you do and say and think.”',
-      'Epictetus':'Live your role well; outcomes belong to nature.',
-      'Buddha':'All conditioned things are impermanent; meet this with compassion.',
-      'Camus':'The absurd frees you to act without guarantees—create your meaning.',
-      'Viktor Frankl':'Meaning can be found through work, love, and the stance you take toward suffering.'
-    }
-  };
-  let currentPhiloCategory='WORRY';
-  const $pWrap=document.getElementById('philosChips');
-  PHILOS.forEach(p=>{
-    const b=document.createElement('button'); b.type='button'; b.className='chip'; b.textContent=p;
-    b.onclick=()=>{ [...$pWrap.children].forEach(x=>x.classList.remove('active')); b.classList.add('active');
-      const q=PHILO_QUOTES[currentPhiloCategory][p]; document.getElementById('philoOut').textContent=q||''; };
-    $pWrap.appendChild(b);
+  const items=LIB.map((it,ix)=>({ix,score:(scores[it.cat]||0)*(it.w||1),...it}))
+                 .filter(x=>x.score>0).sort((a,b)=>b.score-a.score).slice(0,5);
+  if(items.length===0){$feed.innerHTML='<div class="helper">No matches yet. Try one more symptom.</div>'; return;}
+  items.forEach(it=>{
+    const d=document.createElement('div'); d.className='item';
+    d.innerHTML=`<div class="meta">${it.school} <span class="tag">• ${CATS[it.cat].name}</span></div>
+      <div class="title" style="text-transform:none; letter-spacing:.2px; font-size:16px; margin:0">${it.t}</div>
+      <div class="small" style="margin-top:4px; color:#d0d8df"><b>Why this:</b> ${it.c}</div>
+      <div style="margin-top:6px">${it.b}</div>
+      <div class="divider" style="margin:10px 0"></div>
+      <div style="font-size:13px"><b>Do now:</b> ${it.a}</div>
+      <div style="margin-top:10px"><a href="${it.u}" target="_blank" rel="noopener">Learn more ↗</a></div>`;
+    $feed.appendChild(d);
   });
 
-  /* Interactive Exercises */
-  // 1) 5-4-3-2-1
-  const gSets=[{n:5,label:'See'},{n:4,label:'Touch'},{n:3,label:'Hear'},{n:2,label:'Smell'},{n:1,label:'Taste'}];
-  document.getElementById('gStart').onclick=()=>{
-    const wrap=document.getElementById('gList'); const status=document.getElementById('gStatus'); wrap.innerHTML='';
-    gSets.forEach(({n,label})=>{
-      const col=document.createElement('div'); col.style.minWidth='120px';
-      const head=document.createElement('div'); head.className='small'; head.textContent=`${label} ${n}`; col.appendChild(head);
-      for(let i=1;i<=n;i++){ const b=document.createElement('button'); b.type='button'; b.className='btn'; b.style.padding='8px 10px'; b.textContent=label+' '+i;
-        b.onclick=()=>{ b.classList.toggle('primary'); checkDone(); }; col.appendChild(b); }
-      wrap.appendChild(col);
+  const dom = scores.WORRY >= scores.EXIST ? 'WORRY' : 'EXIST';
+  currentPhiloCategory = dom;
+  document.getElementById('philoOut').textContent = 'Pick a voice below for a short take on your current state.';
+}
+
+/* Philosopher coach */
+const PHILOS=['Marcus Aurelius','Epictetus','Buddha','Camus','Viktor Frankl'];
+const PHILO_QUOTES={
+  WORRY:{
+    'Marcus Aurelius':'“If you are distressed by anything external, the pain is not due to the thing itself but to your estimate of it.”',
+    'Epictetus':'“Some things are up to us and some are not.” Focus on the former; let the latter be.',
+    'Buddha':'Notice the arising of worry; see it as a passing event in the mind.',
+    'Camus':'Act with integrity in uncertainty; meaning is made in the doing.',
+    'Viktor Frankl':'Between stimulus and response there is space. Choose your response.'
+  },
+  EXIST:{
+    'Marcus Aurelius':'“You could leave life right now. Let that determine what you do and say and think.”',
+    'Epictetus':'Live your role well; outcomes belong to nature.',
+    'Buddha':'All conditioned things are impermanent; meet this with compassion.',
+    'Camus':'The absurd frees you to act without guarantees — create your meaning.',
+    'Viktor Frankl':'Meaning can be found through work, love, and the stance you take toward suffering.'
+  }
+};
+let currentPhiloCategory='WORRY';
+const $pWrap=document.getElementById('philosChips');
+PHILOS.forEach(p=>{
+  const b=document.createElement('button'); b.type='button'; b.className='chip'; b.textContent=p;
+  b.onclick=()=>{ [...$pWrap.children].forEach(x=>x.classList.remove('active')); b.classList.add('active');
+    const q=PHILO_QUOTES[currentPhiloCategory][p]; document.getElementById('philoOut').textContent=q||''; };
+  $pWrap.appendChild(b);
+});
+
+/* Exercises */
+// 1) 5-4-3-2-1
+const gSets=[{n:5,label:'See'},{n:4,label:'Touch'},{n:3,label:'Hear'},{n:2,label:'Smell'},{n:1,label:'Taste'}];
+document.getElementById('gStart').onclick=()=>{
+  const wrap=document.getElementById('gList'); const status=document.getElementById('gStatus'); wrap.innerHTML='';
+  gSets.forEach(({n,label})=>{
+    const col=document.createElement('div'); col.style.minWidth='120px';
+    const head=document.createElement('div'); head.className='small'; head.textContent=`${label} ${n}`; col.appendChild(head);
+    for(let i=1;i<=n;i++){ const b=document.createElement('button'); b.type='button'; b.className='btn'; b.style.padding='8px 10px'; b.textContent=label+' '+i;
+      b.onclick=()=>{ b.classList.toggle('primary'); checkDone(); }; col.appendChild(b); }
+    wrap.appendChild(col);
+  });
+  status.textContent='Tap as you notice them.';
+  function checkDone(){ const allBtns=[...document.querySelectorAll('#gList .btn')]; const done=allBtns.filter(b=>b.classList.contains('primary')).length; const total=allBtns.length;
+    document.getElementById('gStatus').textContent = done===total ? 'Complete. Notice your body now.' : `Progress: ${done}/${total}`; }
+};
+// 2) Worry Postponement
+let wpTimer=null, wpRemain=0;
+document.getElementById('wpStart').onclick=()=>{ const mins=parseInt(document.getElementById('wpMinutes').value,10); wpRemain=mins*60; clearInterval(wpTimer); tickWP(); wpTimer=setInterval(tickWP,1000); };
+function tickWP(){ const el=document.getElementById('wpCountdown'); if(wpRemain<=0){ clearInterval(wpTimer); el.textContent='Time’s up — check if this still needs attention.'; return;}
+  const m=Math.floor(wpRemain/60), s=wpRemain%60; el.textContent=`${m}:${String(s).padStart(2,'0')} remaining`; wpRemain--; }
+// 3) Values
+const VALUES=['Kindness','Curiosity','Courage','Learning','Contribution','Health','Family','Craft','Play','Honesty'];
+const $vals=document.getElementById('valChips'), $vsug=document.getElementById('valSuggest');
+VALUES.forEach(v=>{ const b=document.createElement('button'); b.type='button'; b.className='chip'; b.textContent=v;
+  b.onclick=()=>{ [...$vals.children].forEach(x=>x.classList.remove('active')); b.classList.add('active'); suggest(v); }; $vals.appendChild(b); });
+function suggest(v){ const ideas={
+  Kindness:'Send a 2-line supportive message.',
+  Curiosity:'Read 1 page about today’s question.',
+  Courage:'Ship a rough draft to 1 person.',
+  Learning:'Watch a 3-min explainer; take 1 note.',
+  Contribution:'Do a 5-min helpful task for someone.',
+  Health:'Stand, stretch, drink water mindfully.',
+  Family:'Voice note “thinking of you”.',
+  Craft:'Improve one tiny detail in your work.',
+  Play:'10-min playful sketch or tune.',
+  Honesty:'Write and send a clear, kind sentence.'
+}; $vsug.textContent='Try: '+(ideas[v]||'Do one tiny act that expresses it.'); }
+// 4) Evidence Ledger
+const elList=[]; const $elList=document.getElementById('elList');
+document.getElementById('elAdd').onclick=()=>{ const p=document.getElementById('elPred').value.trim(); const o=document.getElementById('elOut').value.trim();
+  if(!p){ alert('Add a prediction.'); return; } elList.push({p,o,ts:new Date().toLocaleString()});
+  document.getElementById('elPred').value=''; document.getElementById('elOut').value=''; renderEL(); };
+document.getElementById('elClear').onclick=()=>{ elList.length=0; renderEL(); };
+function renderEL(){ if(!elList.length){ $elList.textContent='No entries yet.'; return;} $elList.innerHTML='';
+  elList.slice().reverse().forEach(({p,o,ts})=>{ const div=document.createElement('div'); div.style.borderTop='1px solid var(--line)'; div.style.padding='6px 0';
+    div.innerHTML=`<div><b>Prediction:</b> ${p}</div><div><b>Outcome:</b> ${o||'<i>(later)</i>'}</div><div class="small">${ts}</div>`; $elList.appendChild(div); }); }
+// 5) Decision Dice
+document.getElementById('ddPick').onclick=()=>{ const A=document.getElementById('ddA').value.trim(); const B=document.getElementById('ddB').value.trim();
+  if(!A && !B){ alert('Add at least one option.'); return; } const pick=!A?B:(!B?A:(A.length<=B.length?A:B));
+  document.getElementById('ddResult').textContent='Do now: '+pick+'  (smallest reversible step)'; };
+// 6) Meaning Builder
+const MB_WORDS=['Health','Family','Friendship','Craft','Play','Status','Wealth','Freedom','Nature','Learning','Kindness','Honesty','Adventure','Rest','Art','Faith','Service','Stability','Novelty','Community'];
+const $mbChips=document.getElementById('mbChips'), $mbYes=document.getElementById('mbYes'), $mbNo=document.getElementById('mbNo'), $mbOut=document.getElementById('mbOut');
+MB_WORDS.forEach(w=>{ $mbChips.appendChild(makeDraggable(w)); });
+function makeDraggable(text){ const el=document.createElement('span'); el.className='draggable'; el.textContent=text; el.draggable=true; el.tabIndex=0;
+  el.onclick=()=>{ const parent=el.parentElement; if(parent.id==='mbYes') $mbNo.appendChild(el); else $mbYes.appendChild(el); renderMeaning(); };
+  el.addEventListener('dragstart',e=>{ e.dataTransfer.setData('text/plain', text); dragging=el; }); return el; }
+let dragging=null; [$mbYes,$mbNo].forEach(col=>{ col.addEventListener('dragover',e=>{ e.preventDefault(); });
+  col.addEventListener('drop',e=>{ e.preventDefault(); if(dragging) col.appendChild(dragging); dragging=null; renderMeaning(); }); });
+function renderMeaning(){
+  const yes=[...$mbYes.querySelectorAll('.draggable')].map(x=>x.textContent);
+  if(yes.includes('Kindness')||yes.includes('Service')) $mbOut.textContent='Meaning often grows when we serve beyond ourselves (Frankl).';
+  else if(yes.includes('Craft')||yes.includes('Art')) $mbOut.textContent='Keep it simple and honest; do your work well (Marcus-ish).';
+  else if(yes.includes('Learning')) $mbOut.textContent='Use obstacles as practice. Learn by doing.';
+  else if(yes.includes('Family')||yes.includes('Community')) $mbOut.textContent='Helping others helps you (Stoic ethos).';
+  else $mbOut.textContent='Arrange by feel. Let what matters lead the next tiny act.';
+}
+// 7) Breathing 4-6
+let breathTimer=null, breathPhase='exhale';
+const $circle=document.getElementById('breathCircle'), $bStatus=document.getElementById('breathStatus');
+document.getElementById('breathStart').onclick=()=>{ clearInterval(breathTimer); breathPhase='exhale'; runBreath(); breathTimer=setInterval(runBreath,10000); };
+document.getElementById('breathStop').onclick=()=>{ clearInterval(breathTimer); $bStatus.textContent='Paused'; $circle.style.transition='transform .25s ease-out'; $circle.style.transform='scale(1)'; };
+function runBreath(){
+  if(breathPhase==='exhale'){ // inhale
+    $bStatus.textContent='Breathe in… 4s';
+    $circle.style.transition='transform 4s ease-in-out'; $circle.style.transform='scale(1.45)';
+    breathPhase='inhale'; setTimeout(()=>{ $bStatus.textContent='Hold…'; },3800);
+  }else{ // exhale
+    $bStatus.textContent='Breathe out… 6s';
+    $circle.style.transition='transform 6s ease-in-out'; $circle.style.transform='scale(1)';
+    breathPhase='exhale';
+  }
+}
+
+/* Buttons */
+document.getElementById('go').onclick=compute;
+document.getElementById('homeGo').onclick=compute;
+document.getElementById('jumpExercises').onclick=()=>{ document.getElementById('exercises').scrollIntoView({behavior:'smooth'}); };
+
+function resetAll(){
+  document.querySelectorAll('.chip.active').forEach(el=>el.classList.remove('active'));
+  document.getElementById('results').style.display='none'; updateCount();
+  document.getElementById('gList').innerHTML=''; document.getElementById('gStatus').textContent='Tap items as you notice them.';
+  clearInterval(wpTimer); document.getElementById('wpCountdown').textContent='';
+  [...document.getElementById('valChips').children].forEach(x=>x.classList.remove('active')); document.getElementById('valSuggest').textContent='';
+  document.getElementById('elPred').value=''; document.getElementById('elOut').value=''; document.getElementById('elList').textContent='';
+  document.getElementById('ddA').value=''; document.getElementById('ddB').value=''; document.getElementById('ddResult').textContent='';
+  const $chips=document.getElementById('mbChips'), $yes=document.getElementById('mbYes'), $no=document.getElementById('mbNo'); document.getElementById('mbOut').textContent='';
+  [...$yes.querySelectorAll('.draggable')].forEach(el=>$chips.appendChild(el)); [...$no.querySelectorAll('.draggable')].forEach(el=>$chips.appendChild(el));
+  clearInterval(breathTimer); document.getElementById('breathStatus').textContent=''; const $c=document.getElementById('breathCircle'); $c.style.transition='transform .25s ease-out'; $c.style.transform='scale(1)';
+}
+document.getElementById('clear').onclick=resetAll;
+document.getElementById('homeClear').onclick=resetAll;
+
+/* FAQ modal */
+(function faq(){
+  const overlay=document.getElementById('faqModal');
+  const openBtn=document.getElementById('faqBtn');
+  const closeBtn=document.getElementById('faqClose');
+  function open(){ overlay.style.display='flex'; document.body.style.overflow='hidden'; closeBtn.focus(); }
+  function close(){ overlay.style.display='none'; document.body.style.overflow=''; openBtn.focus(); }
+  openBtn.addEventListener('click',open);
+  closeBtn.addEventListener('click',close);
+  overlay.addEventListener('click',e=>{ if(e.target===overlay) close(); });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape' && overlay.style.display==='flex') close(); });
+})();
+
+/* INFO modal (context help for every “i” button) */
+const INFO_COPY = {
+  symptoms: "<p><b>Pick 2–4 symptoms</b> that feel true now. We match them to perspectives and rank fit. You can change them anytime.</p>",
+  results:  "<p>These are the <b>top 5</b> perspectives for your selection. Each shows a <b>1-line why</b>, a plain explanation, and a <b>Do now</b> step.</p>",
+  coach:    "<p>Tap a voice to read a short, relevant quote or paraphrase — to nudge your mindset right now.</p>",
+  exercises:"<p>Short, interactive tools to <b>calm loops</b>, <b>act on values</b>, and <b>find perspective</b>. Try one after reading a perspective.</p>",
+  g:        "<p><b>5-4-3-2-1</b> grounds you via senses. Tap items as you notice them. It brings attention from thoughts to the present.</p>",
+  wp:       "<p>Postpone worry to a small daily window. When it pops up, say “<i>Later.</i>” Park details here and return at your chosen time.</p>",
+  val:      "<p>Pick a value and do a <b>tiny action</b> that expresses it. This builds meaning even when feelings don’t shift right away.</p>",
+  el:       "<p>Write your <b>prediction</b> now and the <b>outcome</b> later. Seeing the pattern reduces scary over-estimates.</p>",
+  dd:       "<p>When stuck, pick the <b>smallest reversible step</b>. You’ll learn fast with minimal risk, and momentum helps mood.</p>",
+  mb:       "<p>Drag words into “Matters” or “Doesn’t.” Let what matters guide one small step. Meaning grows with aligned action.</p>",
+  br:       "<p><b>4 in → 6 out</b> slows the body’s stress response. Follow the circle: inhale as it grows, exhale as it softens.</p>",
+  legal:    "<p>This is general educational support — not medical advice. If you’re in crisis, please contact local emergency services.</p>"
+};
+(function infoModal(){
+  const overlay=document.getElementById('infoModal');
+  const title=document.getElementById('infoTitle');
+  const body=document.getElementById('infoBody');
+  const closeBtn=document.getElementById('infoClose');
+  function open(t,html){ title.textContent=t; body.innerHTML=html; overlay.style.display='flex'; document.body.style.overflow='hidden'; closeBtn.focus(); }
+  function close(){ overlay.style.display='none'; document.body.style.overflow=''; }
+  document.querySelectorAll('[data-info]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const key=btn.getAttribute('data-info');
+      const mapTitle={
+        symptoms:"Picking Symptoms", results:"Your Top 5", coach:"What would they say?",
+        exercises:"Exercises", g:"5-4-3-2-1 Grounding", wp:"Worry Postponement",
+        val:"Values → micro-act", el:"Prediction vs Outcome", dd:"Decision Dice",
+        mb:"Meaning Builder", br:"Guided Breathing", legal:"Note"
+      };
+      open(mapTitle[key]||"Info", INFO_COPY[key]||"<p>No info yet.</p>");
     });
-    status.textContent='Tap as you notice them.';
-    function checkDone(){ const allBtns=[...document.querySelectorAll('#gList .btn')]; const done=allBtns.filter(b=>b.classList.contains('primary')).length; const total=allBtns.length;
-      document.getElementById('gStatus').textContent = done===total ? 'Complete. Notice your body now.' : `Progress: ${done}/${total}`; }
-  };
+  });
+  closeBtn.addEventListener('click', close);
+  overlay.addEventListener('click', e=>{ if(e.target===overlay) close(); });
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape' && overlay.style.display==='flex') close(); });
+})();
 
-  // 2) Worry Postponement
-  let wpTimer=null, wpRemain=0;
-  document.getElementById('wpStart').onclick=()=>{ const mins=parseInt(document.getElementById('wpMinutes').value,10); wpRemain=mins*60; clearInterval(wpTimer); tickWP(); wpTimer=setInterval(tickWP,1000); };
-  function tickWP(){ const el=document.getElementById('wpCountdown'); if(wpRemain<=0){ clearInterval(wpTimer); el.textContent='Time’s up — check if this still needs attention.'; return;}
-    const m=Math.floor(wpRemain/60), s=wpRemain%60; el.textContent=`${m}:${String(s).padStart(2,'0')} remaining`; wpRemain--; }
+/* Random footer quote (impactful + relevant) */
+const QUOTES = [
+  "“The impediment to action advances action. What stands in the way becomes the way.” — Marcus Aurelius",
+  "“Between stimulus and response there is a space. In that space is our power to choose.” — Viktor Frankl",
+  "“Man is not worried by real problems so much as by his imagined anxieties.” — Epictetus",
+  "“The only way out is through.” — Robert Frost",
+  "“Act first, then think clearly.” — Behavioral activation, summarized",
+  "“The obstacle is the path.” — Zen proverb"
+];
+(function quote(){
+  const pick = QUOTES[Math.floor(Math.random()*QUOTES.length)];
+  document.getElementById('footerQuote').textContent = pick;
+})();
 
-  // 3) Values Picker
-  const VALUES=['Kindness','Curiosity','Courage','Learning','Contribution','Health','Family','Craft','Play','Honesty'];
-  const $vals=document.getElementById('valChips'); const $vsug=document.getElementById('valSuggest');
-  VALUES.forEach(v=>{ const b=document.createElement('button'); b.type='button'; b.className='chip'; b.textContent=v;
-    b.onclick=()=>{ [...$vals.children].forEach(x=>x.classList.remove('active')); b.classList.add('active'); suggest(v); }; $vals.appendChild(b); });
-  function suggest(v){ const ideas={ Kindness:'Send a 2-line supportive message.', Curiosity:'Read 1 page about today’s question.',
-    Courage:'Ship a rough draft to 1 person.', Learning:'Watch a 3-min explainer; take 1 note.', Contribution:'Do a 5-min helpful task for someone.',
-    Health:'Stand, stretch, drink water mindfully.', Family:'Voice note “thinking of you”.', Craft:'Improve one tiny detail in your work.',
-    Play:'10-min playful sketch or tune.', Honesty:'Write and send a clear, kind sentence.' };
-    $vsug.textContent='Try: '+(ideas[v]||'Do one tiny act that expresses it.'); }
-
-  // 4) Evidence Ledger
-  const elList=[]; const $elList=document.getElementById('elList');
-  document.getElementById('elAdd').onclick=()=>{ const p=document.getElementById('elPred').value.trim(); const o=document.getElementById('elOut').value.trim();
-    if(!p){ alert('Add a prediction.'); return; } elList.push({p,o,ts:new Date().toLocaleTimeString()});
-    document.getElementById('elPred').value=''; document.getElementById('elOut').value=''; renderEL(); };
-  document.getElementById('elClear').onclick=()=>{ elList.length=0; renderEL(); };
-  function renderEL(){ if(!elList.length){ $elList.textContent='No entries yet.'; return;} $elList.innerHTML='';
-    elList.slice().reverse().forEach(({p,o,ts})=>{ const div=document.createElement('div'); div.style.borderTop='1px solid var(--line)'; div.style.padding='6px 0';
-      div.innerHTML=`<div><b>Prediction:</b> ${p}</div><div><b>Outcome:</b> ${o||'<i>(later)</i>'}</div><div class="small">${ts}</div>`; $elList.appendChild(div); }); }
-
-  // 5) Decision Dice
-  document.getElementById('ddPick').onclick=()=>{ const A=document.getElementById('ddA').value.trim(); const B=document.getElementById('ddB').value.trim();
-    if(!A && !B){ alert('Add at least one option.'); return; } const pick=!A?B:(!B?A:(A.length<=B.length?A:B));
-    document.getElementById('ddResult').textContent='Do now: '+pick+'  (smallest reversible step)'; };
-
-  // 6) Meaning Builder
-  const MB_WORDS=['Health','Family','Friendship','Craft','Play','Status','Wealth','Freedom','Nature','Learning','Kindness','Honesty','Adventure','Rest','Art','Faith','Service','Stability','Novelty','Community'];
-  const $mbChips=document.getElementById('mbChips'), $mbYes=document.getElementById('mbYes'), $mbNo=document.getElementById('mbNo'), $mbOut=document.getElementById('mbOut');
-  MB_WORDS.forEach(w=>{ $mbChips.appendChild(makeDraggable(w)); });
-  function makeDraggable(text){ const el=document.createElement('span'); el.className='draggable'; el.textContent=text; el.draggable=true; el.tabIndex=0;
-    el.onclick=()=>{ const parent=el.parentElement; if(parent.id==='mbYes') $mbNo.appendChild(el); else $mbYes.appendChild(el); renderMeaning(); };
-    el.addEventListener('dragstart',e=>{ e.dataTransfer.setData('text/plain', text); dragging=el; }); return el; }
-  let dragging=null; [$mbYes,$mbNo].forEach(col=>{ col.addEventListener('dragover',e=>{ e.preventDefault(); });
-    col.addEventListener('drop',e=>{ e.preventDefault(); if(dragging) col.appendChild(dragging); dragging=null; renderMeaning(); }); });
-  function renderMeaning(){ const yes=[...$mbYes.querySelectorAll('.draggable')].map(x=>x.textContent);
-    if(yes.includes('Kindness')||yes.includes('Service')) $mbOut.textContent='“Meaning grows when we serve beyond ourselves.” — Frankl-ish nudge';
-    else if(yes.includes('Craft')||yes.includes('Art')) $mbOut.textContent='“Keep it simple and honest; do your work well.” — Marcus-ish nudge';
-    else if(yes.includes('Learning')) $mbOut.textContent='“Use obstacles as practice. Learn by doing.”';
-    else if(yes.includes('Family')||yes.includes('Community')) $mbOut.textContent='“Helping others helps you.” — Stoic ethos';
-    else $mbOut.textContent='Arrange by feel. Let what matters lead the next tiny act.'; }
-
-  // 7) Guided Breathing (4s in → 6s out)
-  let breathTimer=null, breathPhase='exhale';
-  const $circle=document.getElementById('breathCircle'), $bStatus=document.getElementById('breathStatus');
-  document.getElementById('breathStart').onclick=()=>{ clearInterval(breathTimer); breathPhase='exhale'; runBreath(); breathTimer=setInterval(runBreath,10000); };
-  document.getElementById('breathStop').onclick=()=>{ clearInterval(breathTimer); $bStatus.textContent='Paused'; $circle.style.transition='transform .25s ease-out'; $circle.style.transform='scale(1)'; };
-  function runBreath(){
-    if(breathPhase==='exhale'){
-      $bStatus.textContent='Breathe in… 4s';
-      $circle.style.transition='transform 4s ease-in-out';
-      $circle.style.transform='scale(1.45)';
-      breathPhase='inhale';
-      setTimeout(()=>{ $bStatus.textContent='Hold… 0–1s'; },4000);
-    }else{
-      $bStatus.textContent='Breathe out… 6s';
-      $circle.style.transition='transform 6s ease-in-out';
-      $circle.style.transform='scale(1)';
-      breathPhase='exhale';
-    }
-  }
-
-  /* FAQ modal wiring */
-  (function faq(){
-    const overlay=document.getElementById('faqModal');
-    const openBtn=document.getElementById('faqBtn');
-    const closeBtn=document.getElementById('faqClose');
-    function open(){ overlay.style.display='flex'; document.body.style.overflow='hidden'; closeBtn.focus(); }
-    function close(){ overlay.style.display='none'; document.body.style.overflow=''; openBtn.focus(); }
-    openBtn.addEventListener('click',open);
-    closeBtn.addEventListener('click',close);
-    overlay.addEventListener('click',e=>{ if(e.target===overlay) close(); });
-    document.addEventListener('keydown',e=>{ if(e.key==='Escape' && overlay.style.display==='flex') close(); });
-  })();
-
-  /* Buttons */
-  document.getElementById('go').onclick=compute;
-  document.getElementById('homeGo').onclick=compute;
-  document.getElementById('jumpExercises').onclick=()=>{ document.getElementById('exercises').scrollIntoView({behavior:'smooth'}); };
-
-  function resetAll(){
-    document.querySelectorAll('.chip.active').forEach(el=>el.classList.remove('active'));
-    document.getElementById('results').style.display='none';
-    updateCount();
-    document.getElementById('gList').innerHTML=''; document.getElementById('gStatus').textContent='Tap items as you notice them.';
-    clearInterval(wpTimer); document.getElementById('wpCountdown').textContent='';
-    [...document.getElementById('valChips').children].forEach(x=>x.classList.remove('active')); document.getElementById('valSuggest').textContent='';
-    document.getElementById('elPred').value=''; document.getElementById('elOut').value=''; document.getElementById('elList').textContent='';
-    document.getElementById('ddA').value=''; document.getElementById('ddB').value=''; document.getElementById('ddResult').textContent='';
-    const $chips=document.getElementById('mbChips'), $yes=document.getElementById('mbYes'), $no=document.getElementById('mbNo'); document.getElementById('mbOut').textContent='';
-    [...$yes.querySelectorAll('.draggable')].forEach(el=>$chips.appendChild(el)); [...$no.querySelectorAll('.draggable')].forEach(el=>$chips.appendChild(el));
-    clearInterval(breathTimer); document.getElementById('breathStatus').textContent=''; const $c=document.getElementById('breathCircle'); $c.style.transition='transform .25s ease-out'; $c.style.transform='scale(1)';
-  }
-  document.getElementById('clear').onclick=resetAll;
-  document.getElementById('homeClear').onclick=resetAll;
-
-  (function init(){ /* no async */ })();
+/* INIT */
+(function init(){ /* nothing async */ })();
 </script>
