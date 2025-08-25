@@ -1047,22 +1047,68 @@ function updateMBUI(){
     $mbOut.textContent = 'Arrange by feel. Let what matters lead the next tiny act.';
     }
 }
-// 7) Breathing 4-6
-let breathTimer=null, breathPhase='exhale';
-const $circle=document.getElementById('breathCircle'), $bStatus=document.getElementById('breathStatus');
-document.getElementById('breathStart').onclick=()=>{ clearInterval(breathTimer); breathPhase='exhale'; runBreath(); breathTimer=setInterval(runBreath,10000); };
-document.getElementById('breathStop').onclick=()=>{ clearInterval(breathTimer); $bStatus.textContent='Paused'; $circle.style.transition='transform .25s ease-out'; $circle.style.transform='scale(1)'; };
-function runBreath(){
-  if(breathPhase==='exhale'){ // inhale
-    $bStatus.textContent='Breathe in… 4s';
-    $circle.style.transition='transform 4s ease-in-out'; $circle.style.transform='scale(1.45)';
-    breathPhase='inhale'; setTimeout(()=>{ $bStatus.textContent='Hold…'; },3800);
-  }else{ // exhale
-    $bStatus.textContent='Breathe out… 6s';
-    $circle.style.transition='transform 6s ease-in-out'; $circle.style.transform='scale(1)';
-    breathPhase='exhale';
-  }
+// 7) Breathing 4-6 — Clean, smooth, mobile-friendly, with live countdown and phase text
+let breathPhase = 'inhale';
+let breathInterval = null;
+let breathTimeout = null;
+let breathTimeLeft = 0;
+
+const $circle = document.getElementById('breathCircle');
+const $bStatus = document.getElementById('breathStatus');
+
+// Add a live countdown element if not present
+let $bTimer = document.getElementById('breathTimer');
+if (!$bTimer) {
+  $bTimer = document.createElement('span');
+  $bTimer.id = 'breathTimer';
+  $bTimer.className = 'small';
+  $bStatus.parentNode.appendChild($bTimer);
 }
+
+function setCircle(scale, duration) {
+  $circle.style.transition = `transform ${duration}s cubic-bezier(.4,1,.6,1)`;
+  $circle.style.transform = `scale(${scale})`;
+}
+
+function updateBreathStatus(phase, timeLeft) {
+  $bStatus.textContent = phase === 'inhale' ? 'Inhale' : 'Exhale';
+  $bTimer.textContent = ` — ${timeLeft}s`;
+}
+
+function runBreathPhase(phase) {
+  clearInterval(breathInterval);
+  clearTimeout(breathTimeout);
+  breathPhase = phase;
+  breathTimeLeft = phase === 'inhale' ? 4 : 6;
+  setCircle(phase === 'inhale' ? 1.45 : 1, breathTimeLeft);
+  updateBreathStatus(phase, breathTimeLeft);
+
+  breathInterval = setInterval(() => {
+    breathTimeLeft--;
+    if (breathTimeLeft > 0) {
+      updateBreathStatus(phase, breathTimeLeft);
+    } else {
+      clearInterval(breathInterval);
+      breathTimeout = setTimeout(() => {
+        runBreathPhase(phase === 'inhale' ? 'exhale' : 'inhale');
+      }, 100);
+    }
+  }, 1000);
+}
+
+document.getElementById('breathStart').onclick = () => {
+  clearInterval(breathInterval);
+  clearTimeout(breathTimeout);
+  runBreathPhase('inhale');
+};
+
+document.getElementById('breathStop').onclick = () => {
+  clearInterval(breathInterval);
+  clearTimeout(breathTimeout);
+  $bStatus.textContent = 'Paused';
+  $bTimer.textContent = '';
+  setCircle(1, 0.25);
+};
 
 /* Buttons */
 document.getElementById('go').onclick=compute;
