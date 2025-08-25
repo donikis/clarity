@@ -95,8 +95,89 @@
   .progress>i{display:block; height:100%; background:linear-gradient(90deg,var(--accent),var(--accent-2)); width:0%; transition:width .3s ease}
 
   /* Drag area */
-  .dragZone{display:grid; grid-template-columns:1fr 1fr; gap:10px}
-  .dropCol{border:1px dashed var(--line); border-radius:12px; min-height:120px; padding:10px}
+ .dragZone {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+@media (min-width: 720px) {
+  .dragZone {
+    grid-template-columns: 1fr 1fr 1fr; /* pool / yes / no on wide screens */
+  }
+}
+
+.dropCol {
+  border: 1px dashed var(--line);
+  border-radius: 14px;
+  min-height: 120px;
+  padding: 10px;
+  background: rgba(255,255,255,0.02);
+  transition: border-color .15s ease, background .15s ease;
+}
+
+.dropCol.active {
+  border-color: var(--accent-2);
+  background: rgba(0,176,255,0.06);
+}
+
+.dropTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--muted);
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+.dropCount {
+  margin-left: 6px;
+  opacity: .9;
+}
+
+.placeholder {
+  color: var(--muted);
+  font-size: 12px;
+  opacity: .9;
+  padding: 6px 0 2px;
+}
+
+.draggable {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 6px 6px 0 0;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #0f1114;
+  cursor: pointer;              /* clearer it's tappable */
+  user-select: none;
+  touch-action: manipulation;
+  transition: transform .08s ease, background .12s ease, border-color .12s ease;
+}
+
+.draggable:active {
+  transform: scale(.98);
+  background: rgba(255,255,255,.04);
+}
+
+.draggable:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 2px;
+  border-color: var(--accent-2);
+}
+
+.draggable .hint {
+  font-size: 11px;
+  color: var(--muted);
+  opacity: .9;
+}
+
+.mbHelp {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 6px;
 
   /* Footer / sticky controls */
   footer.sticky{position:fixed; left:0; right:0; bottom:0; background:rgba(17,17,17,.85);
@@ -325,21 +406,48 @@
       </div>
     </div>
 
-    <div class="item">
-      <div class="titleRow">
-        <div>
-          <div class="meta">6) Meaning • Builder</div>
-          <div class="title" style="text-transform:none; letter-spacing:.2px; font-size:16px">What matters? (drag or tap)</div>
-        </div>
-        <button class="btn icon" data-info="mb">i</button>
-      </div>
-      <div class="row" id="mbChips" style="margin-top:6px"></div>
-      <div class="dragZone" style="margin-top:8px">
-        <div class="dropCol" id="mbYes" data-col="yes"><div class="small">Matters to me</div></div>
-        <div class="dropCol" id="mbNo" data-col="no"><div class="small">Doesn’t matter (now)</div></div>
-      </div>
-      <div id="mbOut" class="small" style="margin-top:8px; color:#d0d8df"></div>
+   <div class="item" id="mbItem">
+  <div class="titleRow">
+    <div>
+      <div class="meta">6) Meaning • Builder</div>
+      <div class="title" style="text-transform:none; letter-spacing:.2px; font-size:16px">What matters? (drag or tap to sort)</div>
     </div>
+    <button class="btn icon" data-info="mb">i</button>
+  </div>
+
+  <!-- Tap hint -->
+  <div class="mbHelp">Tip: <b>tap</b> a word to cycle <i>Undecided → Matters → Doesn’t</i>. Long-press & drag also works.</div>
+
+  <!-- Drag/Tap columns -->
+  <div class="dragZone" style="margin-top:8px">
+    <div class="dropCol" id="mbPool" data-col="pool" aria-label="Undecided">
+      <div class="dropTitle">
+        <span>Undecided</span>
+        <span class="dropCount" id="mbPoolCount">0</span>
+      </div>
+      <div id="mbPoolWrap"></div>
+      <div class="placeholder" id="mbPoolPH">(Tap to move to “Matters” →)</div>
+    </div>
+
+    <div class="dropCol" id="mbYes" data-col="yes" aria-label="Matters to me">
+      <div class="dropTitle">
+        <span>Matters to me</span>
+        <span class="dropCount" id="mbYesCount">0</span>
+      </div>
+      <div class="placeholder" id="mbYesPH">Drop or tap items here</div>
+    </div>
+
+    <div class="dropCol" id="mbNo" data-col="no" aria-label="Doesn’t matter (now)">
+      <div class="dropTitle">
+        <span>Doesn’t matter (now)</span>
+        <span class="dropCount" id="mbNoCount">0</span>
+      </div>
+      <div class="placeholder" id="mbNoPH">Drop or tap items here</div>
+    </div>
+  </div>
+
+  <div id="mbOut" class="small" style="margin-top:10px; color:#d0d8df"></div>
+</div>
 
     <div class="item">
       <div class="titleRow">
@@ -805,21 +913,137 @@ document.getElementById('ddPick').onclick=()=>{ const A=document.getElementById(
   if(!A && !B){ alert('Add at least one option.'); return; } const pick=!A?B:(!B?A:(A.length<=B.length?A:B));
   document.getElementById('ddResult').textContent='Do now: '+pick+'  (smallest reversible step)'; };
 // 6) Meaning Builder
-const MB_WORDS=['Health','Family','Friendship','Craft','Play','Status','Wealth','Freedom','Nature','Learning','Kindness','Honesty','Adventure','Rest','Art','Faith','Service','Stability','Novelty','Community'];
-const $mbChips=document.getElementById('mbChips'), $mbYes=document.getElementById('mbYes'), $mbNo=document.getElementById('mbNo'), $mbOut=document.getElementById('mbOut');
-MB_WORDS.forEach(w=>{ $mbChips.appendChild(makeDraggable(w)); });
-function makeDraggable(text){ const el=document.createElement('span'); el.className='draggable'; el.textContent=text; el.draggable=true; el.tabIndex=0;
-  el.onclick=()=>{ const parent=el.parentElement; if(parent.id==='mbYes') $mbNo.appendChild(el); else $mbYes.appendChild(el); renderMeaning(); };
-  el.addEventListener('dragstart',e=>{ e.dataTransfer.setData('text/plain', text); dragging=el; }); return el; }
-let dragging=null; [$mbYes,$mbNo].forEach(col=>{ col.addEventListener('dragover',e=>{ e.preventDefault(); });
-  col.addEventListener('drop',e=>{ e.preventDefault(); if(dragging) col.appendChild(dragging); dragging=null; renderMeaning(); }); });
-function renderMeaning(){
-  const yes=[...$mbYes.querySelectorAll('.draggable')].map(x=>x.textContent);
-  if(yes.includes('Kindness')||yes.includes('Service')) $mbOut.textContent='Meaning often grows when we serve beyond ourselves (Frankl).';
-  else if(yes.includes('Craft')||yes.includes('Art')) $mbOut.textContent='Keep it simple and honest; do your work well (Marcus-ish).';
-  else if(yes.includes('Learning')) $mbOut.textContent='Use obstacles as practice. Learn by doing.';
-  else if(yes.includes('Family')||yes.includes('Community')) $mbOut.textContent='Helping others helps you (Stoic ethos).';
-  else $mbOut.textContent='Arrange by feel. Let what matters lead the next tiny act.';
+// ==== 6) Meaning Builder — robust, clear tap + drag, 3 states (pool→yes→no) ====
+const MB_WORDS = [
+  'Health','Family','Friendship','Craft','Play','Status','Wealth','Freedom','Nature','Learning',
+  'Kindness','Honesty','Adventure','Rest','Art','Faith','Service','Stability','Novelty','Community'
+];
+
+// Elements
+const $mbPool = document.getElementById('mbPoolWrap');
+const $mbYesCol = document.getElementById('mbYes');
+const $mbNoCol  = document.getElementById('mbNo');
+const $mbPoolCol= document.getElementById('mbPool');
+
+const $mbPoolCount = document.getElementById('mbPoolCount');
+const $mbYesCount  = document.getElementById('mbYesCount');
+const $mbNoCount   = document.getElementById('mbNoCount');
+
+const $mbPoolPH = document.getElementById('mbPoolPH');
+const $mbYesPH  = document.getElementById('mbYesPH');
+const $mbNoPH   = document.getElementById('mbNoPH');
+
+const $mbOut = document.getElementById('mbOut');
+
+// Build chips into POOL
+MB_WORDS.forEach(word => $mbPool.appendChild(makeMBChip(word)));
+updateMBUI();
+
+// Create a draggable/tappable chip
+function makeMBChip(text){
+  const el = document.createElement('span');
+  el.className = 'draggable';
+  el.textContent = text;
+  el.setAttribute('role','button');
+  el.setAttribute('aria-pressed','false');
+  el.tabIndex = 0;
+  el.draggable = true;
+
+  // Small hint dot (optional)
+  const hint = document.createElement('span');
+  hint.className = 'hint';
+  hint.textContent = '⇄';
+  el.appendChild(hint);
+
+  // Tap cycles: pool → yes → no → pool
+  el.addEventListener('click', () => cycle(el));
+
+  // Keyboard support: Enter/Space cycles
+  el.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); cycle(el); }
+  });
+
+  // Drag support (desktop)
+  el.addEventListener('dragstart', e => {
+    e.dataTransfer.setData('text/plain', text);
+    dragging = el;
+    setActive(true);
+  });
+  el.addEventListener('dragend', () => setActive(false));
+
+  return el;
+}
+
+// Cycle element through containers
+function cycle(el){
+  const parent = el.parentElement;
+  const colId = parent?.id;
+  if (colId === 'mbPoolWrap') {
+    $mbYesCol.appendChild(el);
+    el.setAttribute('aria-pressed','true');
+  } else if (parent?.closest('#mbYes')) {
+    $mbNoCol.appendChild(el);
+    el.setAttribute('aria-pressed','false');
+  } else {
+    $mbPool.appendChild(el);
+    el.setAttribute('aria-pressed','false');
+  }
+  updateMBUI();
+}
+
+let dragging = null;
+
+// Enable drop on all three columns
+[$mbPoolCol, $mbYesCol, $mbNoCol].forEach(col => {
+  col.addEventListener('dragover', e => { e.preventDefault(); });
+  col.addEventListener('dragenter', () => { col.classList.add('active'); });
+  col.addEventListener('dragleave', () => { col.classList.remove('active'); });
+  col.addEventListener('drop', e => {
+    e.preventDefault();
+    col.classList.remove('active');
+    if (dragging) {
+      col.id === 'mbPool' ? $mbPool.appendChild(dragging) : col.appendChild(dragging);
+      dragging = null;
+      updateMBUI();
+    }
+  });
+});
+
+function setActive(on){
+  [$mbPoolCol, $mbYesCol, $mbNoCol].forEach(c => on ? c.classList.add('active') : c.classList.remove('active'));
+}
+
+// Update counts, placeholders, and meaning suggestion
+function updateMBUI(){
+  const poolItems = [...$mbPool.querySelectorAll('.draggable')];
+  const yesItems  = [...$mbYesCol.querySelectorAll('.draggable')];
+  const noItems   = [...$mbNoCol.querySelectorAll('.draggable')];
+
+  $mbPoolCount.textContent = poolItems.length;
+  $mbYesCount.textContent  = yesItems.length;
+  $mbNoCount.textContent   = noItems.length;
+
+  // Placeholders visibility
+  $mbPoolPH.style.display = poolItems.length ? 'none' : 'block';
+  $mbYesPH.style.display  = yesItems.length ? 'none' : 'block';
+  $mbNoPH.style.display   = noItems.length ? 'none' : 'block';
+
+  // Suggestion blurb
+  const yes = yesItems.map(x => x.firstChild?.nodeValue || x.textContent);
+  if (yes.includes('Kindness') || yes.includes('Service')) {
+    $mbOut.textContent = 'Meaning often grows when we serve beyond ourselves (Frankl).';
+  } else if (yes.includes('Craft') || yes.includes('Art')) {
+    $mbOut.textContent = 'Keep it simple and honest; do your work well (Marcus-ish).';
+  } else if (yes.includes('Learning')) {
+    $mbOut.textContent = 'Use obstacles as practice. Learn by doing.';
+  } else if (yes.includes('Family') || yes.includes('Community')) {
+    $mbOut.textContent = 'Helping others helps you (Stoic ethos).';
+  } else if (yes.length >= 3) {
+    $mbOut.textContent = 'Nice spread. Pick one and do a tiny action that fits it today.';
+  } else if (yes.length === 0 && poolItems.length) {
+    $mbOut.textContent = 'Tap a word to move it into “Matters” and try a tiny action.';
+  } else {
+    $mbOut.textContent = 'Arrange by feel. Let what matters lead the next tiny act.';
 }
 // 7) Breathing 4-6
 let breathTimer=null, breathPhase='exhale';
